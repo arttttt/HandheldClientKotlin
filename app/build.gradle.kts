@@ -21,11 +21,16 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
 
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
-            implementation("com.arkivanov.decompose:decompose:3.0.0-alpha06")
-            implementation("com.arkivanov.decompose:extensions-compose:3.0.0-alpha06")
-            implementation("com.arkivanov.essenty:lifecycle:2.0.0-alpha06")
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.arkivanov.decompose.core)
+            implementation(libs.arkivanov.decompose.compose)
+            implementation(libs.arkivanov.essenty.lifecycle)
+            implementation(libs.arkivanov.mviKotlin.core)
+            implementation(libs.arkivanov.mviKotlin.main)
+            implementation(libs.arkivanov.mviKotlin.coroutines)
+            implementation(libs.arkivanov.mviKotlin.logging)
+            implementation(libs.arkivanov.mviKotlin.timetravel)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
