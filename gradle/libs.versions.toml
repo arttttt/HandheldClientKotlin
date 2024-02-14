@@ -7,6 +7,8 @@ essenty = "2.0.0-alpha06"
 mviKotlin = "4.0.0-alpha02"
 coroutines = "1.8.0-RC2"
 serializationJson = "1.6.2"
+okio = "3.8.0"
+koin = "3.5.3"
 
 [libraries]
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
@@ -20,7 +22,10 @@ arkivanov-mviKotlin-logging = { group = "com.arkivanov.mvikotlin", name = "mviko
 arkivanov-mviKotlin-timetravel = { group = "com.arkivanov.mvikotlin", name = "mvikotlin-timetravel", version.ref = "mviKotlin" }
 arkivanov-mviKotlin-coroutines = { group = "com.arkivanov.mvikotlin", name = "mvikotlin-extensions-coroutines", version.ref = "mviKotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson" }
+square-okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

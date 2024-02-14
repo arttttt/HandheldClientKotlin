@@ -3,8 +3,10 @@ package com.arttttt.hendheldclient.ui.root
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arttttt.hendheldclient.components.login.LoginComponent
+import com.arttttt.hendheldclient.components.main.MainComponent
 import com.arttttt.hendheldclient.components.root.RootComponent
 import com.arttttt.hendheldclient.ui.login.LoginContent
+import com.arttttt.hendheldclient.ui.main.MainContent
 
 @Composable
 fun RootContent(component: RootComponent) {
@@ -13,6 +15,7 @@ fun RootContent(component: RootComponent) {
     ) {
         when (val child = it.instance) {
             is LoginComponent -> LoginContent(child)
+            is MainComponent -> MainContent(child)
         }
     }
 }

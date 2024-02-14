@@ -9,6 +9,10 @@ plugins {
 
 kotlin {
     jvm("desktop")
+
+    compilerOptions {
+        freeCompilerArgs = listOf("-Xcontext-receivers")
+    }
     
     sourceSets {
         val desktopMain by getting
@@ -22,7 +26,9 @@ kotlin {
             implementation(compose.components.resources)
 
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.kotlinx.serialization.json)
+
             implementation(libs.arkivanov.decompose.core)
             implementation(libs.arkivanov.decompose.compose)
             implementation(libs.arkivanov.essenty.lifecycle)
@@ -31,7 +37,12 @@ kotlin {
             implementation(libs.arkivanov.mviKotlin.coroutines)
             implementation(libs.arkivanov.mviKotlin.logging)
             implementation(libs.arkivanov.mviKotlin.timetravel)
+
+            implementation(libs.square.okio)
+
+            implementation(libs.koin.core)
         }
+
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
