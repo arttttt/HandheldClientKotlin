@@ -9,6 +9,12 @@ object TokenStoreReducer : Reducer<TokenStore.State, TokenStore.Message> {
             is TokenStore.Message.TokenRetrieved -> copy(
                 token = msg.token,
             )
+            is TokenStore.Message.ProgressStarted -> copy(
+                isInProgress = true
+            )
+            is TokenStore.Message.ProgressFinished -> copy(
+                isInProgress = false,
+            )
         }
     }
 }

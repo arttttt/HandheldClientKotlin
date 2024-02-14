@@ -6,7 +6,7 @@ import com.arttttt.hendheldclient.arch.koinScope
 import com.arttttt.hendheldclient.domain.store.TokenStore
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 
 class LoginComponentImpl(
@@ -21,13 +21,12 @@ class LoginComponentImpl(
 
     override val states: StateFlow<LoginComponent.UiState> = tokenStore
         .states
-        .map { state ->
-            if (state.token == null) {
-                LoginComponent.UiState.Progress
-            } else
-                LoginComponent.UiState.Content(
-                    token = state.token.token
-                )
+        .mapNotNull { state ->
+            when {
+                state.isInProgress -> LoginComponent.UiState.Progress
+                state.token != null -> LoginComponent.UiState.Content(state.token.token)
+                else -> null
+            }
         }
         .stateIn(coroutineScope, SharingStarted.Eagerly, LoginComponent.UiState.Progress)
 

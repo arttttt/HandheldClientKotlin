@@ -14,7 +14,8 @@ class TokenStoreFactory(
         return object : TokenStore, Store<TokenStore.Intent, TokenStore.State, TokenStore.Label> by storeFactory.create(
             name = TokenStore::class.qualifiedName,
             initialState = TokenStore.State(
-                token = null
+                token = null,
+                isInProgress = false,
             ),
             bootstrapper = SimpleBootstrapper(
                 TokenStore.Action.RetrieveToken

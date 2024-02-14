@@ -6,6 +6,7 @@ import com.arttttt.hendheldclient.domain.entity.HhdAuthToken
 interface TokenStore : Store<TokenStore.Intent, TokenStore.State, TokenStore.Label> {
 
     data class State(
+        val isInProgress: Boolean,
         val token: HhdAuthToken?
     )
 
@@ -17,6 +18,9 @@ interface TokenStore : Store<TokenStore.Intent, TokenStore.State, TokenStore.Lab
     sealed class Intent
 
     sealed class Message {
+
+        data object ProgressStarted : Message()
+        data object ProgressFinished : Message()
 
         data class TokenRetrieved(
             val token: HhdAuthToken

@@ -22,6 +22,8 @@ class TokenStoreExecutor(
 
     private fun retrieveToken() {
         scope.launch {
+            dispatch(TokenStore.Message.ProgressStarted)
+
             val token = withContext(Dispatchers.IO) {
                 tokenRepository.getHhdToken()
             }
@@ -31,6 +33,8 @@ class TokenStoreExecutor(
                     token = token,
                 )
             )
+
+            dispatch(TokenStore.Message.ProgressFinished)
         }
     }
 }
