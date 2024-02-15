@@ -9,12 +9,12 @@ interface ConnectionStore : Store<ConnectionStore.Intent, ConnectionStore.State,
     data class State(
         val isInProgress: Boolean,
         val token: HhdAuthToken?,
-        val port: HhdPort,
+        val port: HhdPort?,
     )
 
     sealed class Action {
 
-        data object RetrieveToken : Action()
+        data object RetrieveConnectionInfo : Action()
     }
 
     sealed class Intent
@@ -24,8 +24,9 @@ interface ConnectionStore : Store<ConnectionStore.Intent, ConnectionStore.State,
         data object ProgressStarted : Message()
         data object ProgressFinished : Message()
 
-        data class TokenRetrieved(
-            val token: HhdAuthToken
+        data class ConnectionInfoRetrieved(
+            val token: HhdAuthToken,
+            val port: HhdPort,
         ) : Message()
     }
 

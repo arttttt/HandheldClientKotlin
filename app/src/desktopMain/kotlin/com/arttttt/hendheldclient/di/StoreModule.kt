@@ -8,7 +8,7 @@ val storeModule = module {
     single<ConnectionStore> {
         ConnectionStoreFactory(
             storeFactory = get(),
-            tokenRepository = get()
+            connectionRepository = get()
         ).create()
     }
 }

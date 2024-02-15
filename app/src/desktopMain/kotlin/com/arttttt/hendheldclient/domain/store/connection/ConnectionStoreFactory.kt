@@ -3,12 +3,11 @@ package com.arttttt.hendheldclient.domain.store.connection
 import com.arkivanov.mvikotlin.core.store.SimpleBootstrapper
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.arttttt.hendheldclient.domain.entity.HhdPort
-import com.arttttt.hendheldclient.domain.repository.TokenRepository
+import com.arttttt.hendheldclient.domain.repository.ConnectionRepository
 
 class ConnectionStoreFactory(
     private val storeFactory: StoreFactory,
-    private val tokenRepository: TokenRepository,
+    private val connectionRepository: ConnectionRepository,
 ) {
 
     fun create(): ConnectionStore {
@@ -17,16 +16,14 @@ class ConnectionStoreFactory(
             initialState = ConnectionStore.State(
                 token = null,
                 isInProgress = false,
-                port = HhdPort(
-                    port = 5335,
-                ),
+                port = null,
             ),
             bootstrapper = SimpleBootstrapper(
-                ConnectionStore.Action.RetrieveToken
+                ConnectionStore.Action.RetrieveConnectionInfo
             ),
             executorFactory = {
                 ConnectionStoreExecutor(
-                    tokenRepository = tokenRepository,
+                    connectionRepository = connectionRepository,
                 )
             },
             reducer = ConnectionStoreReducer,

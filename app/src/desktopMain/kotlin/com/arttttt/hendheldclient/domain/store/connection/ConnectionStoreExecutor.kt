@@ -1,18 +1,18 @@
 package com.arttttt.hendheldclient.domain.store.connection
 
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.arttttt.hendheldclient.domain.repository.TokenRepository
+import com.arttttt.hendheldclient.domain.repository.ConnectionRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ConnectionStoreExecutor(
-    private val tokenRepository: TokenRepository,
+    private val connectionRepository: ConnectionRepository,
 ) : CoroutineExecutor<ConnectionStore.Intent, ConnectionStore.Action, ConnectionStore.State, ConnectionStore.Message, ConnectionStore.Label>() {
 
     override fun executeAction(action: ConnectionStore.Action) {
         when (action) {
-            is ConnectionStore.Action.RetrieveToken -> retrieveToken()
+            is ConnectionStore.Action.RetrieveConnectionInfo -> retrieveToken()
         }
     }
 
@@ -25,12 +25,15 @@ class ConnectionStoreExecutor(
             dispatch(ConnectionStore.Message.ProgressStarted)
 
             val token = withContext(Dispatchers.IO) {
-                tokenRepository.getHhdToken()
+                connectionRepository.getHhdToken()
             }
 
+            val port = connectionRepository.getDefaultPort()
+
             dispatch(
-                ConnectionStore.Message.TokenRetrieved(
+                ConnectionStore.Message.ConnectionInfoRetrieved(
                     token = token,
+                    port = port,
                 )
             )
 

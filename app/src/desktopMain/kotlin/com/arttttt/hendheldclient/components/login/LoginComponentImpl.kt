@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 
+/**
+ * todo: add more states and handle them properly
+ */
 class LoginComponentImpl(
     context: AppComponentContext,
     private val openNextScreen: () -> Unit,
@@ -24,7 +27,7 @@ class LoginComponentImpl(
         .mapNotNull { state ->
             when {
                 state.isInProgress -> LoginComponent.UiState.Progress
-                state.token != null -> LoginComponent.UiState.Content(
+                state.token != null && state.port != null -> LoginComponent.UiState.Content(
                     token = state.token.token,
                     port = state.port.port.toString(),
                 )

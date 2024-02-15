@@ -6,8 +6,9 @@ object ConnectionStoreReducer : Reducer<ConnectionStore.State, ConnectionStore.M
 
     override fun ConnectionStore.State.reduce(msg: ConnectionStore.Message): ConnectionStore.State {
         return when (msg) {
-            is ConnectionStore.Message.TokenRetrieved -> copy(
+            is ConnectionStore.Message.ConnectionInfoRetrieved -> copy(
                 token = msg.token,
+                port = msg.port,
             )
             is ConnectionStore.Message.ProgressStarted -> copy(
                 isInProgress = true
