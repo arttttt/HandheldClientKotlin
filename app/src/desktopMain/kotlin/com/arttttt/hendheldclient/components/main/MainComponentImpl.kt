@@ -12,6 +12,7 @@ import com.arttttt.hendheldclient.arch.context.AppComponentContext
 import com.arttttt.hendheldclient.arch.context.defaultAppComponentContext
 import com.arttttt.hendheldclient.arch.koinScope
 import com.arttttt.hendheldclient.components.hhd.HhdComponentImpl
+import com.arttttt.hendheldclient.components.main.di.mainComponentModule
 import com.arttttt.hendheldclient.ui.main.NavigationItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -30,7 +31,9 @@ class MainComponentImpl(
         data object About : Config
     }
 
-    private val koinScope = koinScope()
+    private val koinScope = koinScope(
+        mainComponentModule,
+    )
 
     private val navigation = StackNavigation<Config>()
 
