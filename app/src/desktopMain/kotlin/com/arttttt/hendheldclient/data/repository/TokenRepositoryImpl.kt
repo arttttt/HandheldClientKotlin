@@ -1,4 +1,4 @@
-package com.arttttt.hendheldclient.data
+package com.arttttt.hendheldclient.data.repository
 
 import com.arttttt.hendheldclient.domain.entity.HhdAuthToken
 import com.arttttt.hendheldclient.domain.repository.TokenRepository

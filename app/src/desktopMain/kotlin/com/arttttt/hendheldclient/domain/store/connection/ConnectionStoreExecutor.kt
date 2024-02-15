@@ -1,4 +1,4 @@
-package com.arttttt.hendheldclient.domain.store
+package com.arttttt.hendheldclient.domain.store.connection
 
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.hendheldclient.domain.repository.TokenRepository
@@ -6,35 +6,35 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class TokenStoreExecutor(
+class ConnectionStoreExecutor(
     private val tokenRepository: TokenRepository,
-) : CoroutineExecutor<TokenStore.Intent, TokenStore.Action, TokenStore.State, TokenStore.Message, TokenStore.Label>() {
+) : CoroutineExecutor<ConnectionStore.Intent, ConnectionStore.Action, ConnectionStore.State, ConnectionStore.Message, ConnectionStore.Label>() {
 
-    override fun executeAction(action: TokenStore.Action) {
+    override fun executeAction(action: ConnectionStore.Action) {
         when (action) {
-            is TokenStore.Action.RetrieveToken -> retrieveToken()
+            is ConnectionStore.Action.RetrieveToken -> retrieveToken()
         }
     }
 
-    override fun executeIntent(intent: TokenStore.Intent) {
+    override fun executeIntent(intent: ConnectionStore.Intent) {
         super.executeIntent(intent)
     }
 
     private fun retrieveToken() {
         scope.launch {
-            dispatch(TokenStore.Message.ProgressStarted)
+            dispatch(ConnectionStore.Message.ProgressStarted)
 
             val token = withContext(Dispatchers.IO) {
                 tokenRepository.getHhdToken()
             }
 
             dispatch(
-                TokenStore.Message.TokenRetrieved(
+                ConnectionStore.Message.TokenRetrieved(
                     token = token,
                 )
             )
 
-            dispatch(TokenStore.Message.ProgressFinished)
+            dispatch(ConnectionStore.Message.ProgressFinished)
         }
     }
 }

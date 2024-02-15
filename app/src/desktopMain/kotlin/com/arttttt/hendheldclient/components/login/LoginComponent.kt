@@ -8,7 +8,8 @@ interface LoginComponent : DecomposeComponent {
     sealed class UiState {
 
         data class Content(
-            val token: String
+            val token: String,
+            val port: String,
         ) : UiState()
 
         data object Progress : UiState()
