@@ -1,8 +1,10 @@
 package com.arttttt.hendheldclient.data.network.api
 
+import com.arttttt.hendheldclient.data.network.model.HhdSettingsApiResponse
 import com.arttttt.hendheldclient.domain.entity.HhdAuthToken
 import com.arttttt.hendheldclient.domain.entity.HhdPort
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -39,6 +41,7 @@ class HhdApi(
                 Json {
                     prettyPrint = true
                     isLenient = true
+                    ignoreUnknownKeys = true
                 }
             )
         }
@@ -57,8 +60,8 @@ class HhdApi(
         }
     }
 
-    suspend fun getSettings(): String {
-        return client.get("settings").bodyAsText()
+    suspend fun getSettings(): HhdSettingsApiResponse {
+        return client.get("settings").body()
     }
 
     suspend fun getState(): String {

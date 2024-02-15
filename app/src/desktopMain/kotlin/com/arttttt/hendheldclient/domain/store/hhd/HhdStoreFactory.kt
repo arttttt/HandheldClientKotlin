@@ -12,13 +12,17 @@ class HhdStoreFactory(
  
      fun create(): HhdStore {
          val name = HhdStore::class.qualifiedName
-         val initialState = HhdStore.State()
+         val initialState = HhdStore.State(
+             isInProgress = false,
+         )
  
          return object : HhdStore,
              Store<HhdStore.Intent, HhdStore.State, HhdStore.Label> by storeFactory.create(
                  name = name,
                  initialState = initialState,
-                 bootstrapper = SimpleBootstrapper(),
+                 bootstrapper = SimpleBootstrapper(
+                     HhdStore.Action.LoadSettings,
+                 ),
                  executorFactory = {
                      HhdStoreExecutor(
                          hhdRepository = hhdRepository,

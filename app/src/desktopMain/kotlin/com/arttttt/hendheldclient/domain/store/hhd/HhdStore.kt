@@ -5,14 +5,21 @@ package com.arttttt.hendheldclient.domain.store.hhd
  interface HhdStore : Store<HhdStore.Intent, HhdStore.State, HhdStore.Label> {
  
      data class State(
-         val value: Int = 0
+         val isInProgress: Boolean,
      )
  
-     sealed class Action
+     sealed class Action {
+
+         data object LoadSettings : Action()
+     }
  
      sealed class Intent
  
-     sealed class Message
+     sealed class Message {
+
+         data object ProgressStarted : Message()
+         data object ProgressFinished : Message()
+     }
  
      sealed class Label
  }

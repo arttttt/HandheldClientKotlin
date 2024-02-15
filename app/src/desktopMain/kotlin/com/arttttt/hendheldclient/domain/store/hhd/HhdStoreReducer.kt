@@ -5,6 +5,13 @@ package com.arttttt.hendheldclient.domain.store.hhd
  object HhdStoreReducer : Reducer<HhdStore.State, HhdStore.Message> {
  
      override fun HhdStore.State.reduce(msg: HhdStore.Message): HhdStore.State {
-         return this
+         return when (msg) {
+             is HhdStore.Message.ProgressStarted -> copy(
+                 isInProgress = true,
+             )
+             is HhdStore.Message.ProgressFinished -> copy(
+                 isInProgress = false,
+             )
+         }
      }
  }

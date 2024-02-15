@@ -7,8 +7,10 @@ class HhdRepositoryImpl(
     private val api: HhdApi,
 ) : HhdRepository {
 
-    override suspend fun getSettings(): String {
-        return api.getSettings()
+    override suspend fun getSettings(): Any {
+        val result = api.getSettings()
+
+        return result
     }
 
     override suspend fun getState(): String {
