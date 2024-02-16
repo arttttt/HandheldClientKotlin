@@ -14,6 +14,7 @@ class HhdStoreFactory(
          val name = HhdStore::class.qualifiedName
          val initialState = HhdStore.State(
              isInProgress = false,
+             sections = emptyMap(),
          )
  
          return object : HhdStore,

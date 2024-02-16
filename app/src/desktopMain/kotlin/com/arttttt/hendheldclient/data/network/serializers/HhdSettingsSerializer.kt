@@ -7,12 +7,10 @@ import com.arttttt.hendheldclient.utils.mapValuesNutNull
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonArray
@@ -29,7 +27,6 @@ object HhdSettingsSerializer : KSerializer<HhdSettingsApiResponse> {
     }
 
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("HhdSettingsApiResponse") {
-        element<JsonElement>("hhd")
     }
 
     override fun deserialize(decoder: Decoder): HhdSettingsApiResponse {
@@ -38,7 +35,7 @@ object HhdSettingsSerializer : KSerializer<HhdSettingsApiResponse> {
         val jObject = decoder.decodeJsonElement().jsonObject.getValue("hhd").jsonObject
 
         return HhdSettingsApiResponse(
-            settings = jObject.mapValues { (_, jElement) ->
+            hhd = jObject.mapValues { (_, jElement) ->
                 jElement.jsonObject.toContainer()
             }
         )

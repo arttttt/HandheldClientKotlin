@@ -1,6 +1,7 @@
 package com.arttttt.hendheldclient.data.network.api
 
 import com.arttttt.hendheldclient.data.network.model.settings.HhdSettingsApiResponse
+import com.arttttt.hendheldclient.data.network.model.state.HhdStateApiResponse
 import com.arttttt.hendheldclient.domain.entity.HhdAuthToken
 import com.arttttt.hendheldclient.domain.entity.HhdPort
 import io.ktor.client.HttpClient
@@ -14,7 +15,6 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
-import io.ktor.client.statement.bodyAsText
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
@@ -64,7 +64,7 @@ class HhdApi(
         return client.get("settings").body()
     }
 
-    suspend fun getState(): String {
-        return client.get("state").bodyAsText()
+    suspend fun getState(): HhdStateApiResponse {
+        return client.get("state").body()
     }
 }
