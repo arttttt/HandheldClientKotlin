@@ -1,4 +1,4 @@
-package com.arttttt.hendheldclient.data.network.model
+package com.arttttt.hendheldclient.data.network.model.settings
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName

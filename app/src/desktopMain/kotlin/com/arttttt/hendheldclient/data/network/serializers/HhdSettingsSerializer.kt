@@ -1,8 +1,9 @@
 package com.arttttt.hendheldclient.data.network.serializers
 
-import com.arttttt.hendheldclient.data.network.model.HhdContainerFieldApiResponse
-import com.arttttt.hendheldclient.data.network.model.HhdFieldApiResponse
-import com.arttttt.hendheldclient.data.network.model.HhdSettingsApiResponse
+import com.arttttt.hendheldclient.data.network.model.settings.HhdContainerFieldApiResponse
+import com.arttttt.hendheldclient.data.network.model.settings.HhdFieldApiResponse
+import com.arttttt.hendheldclient.data.network.model.settings.HhdSettingsApiResponse
+import com.arttttt.hendheldclient.utils.mapValuesNutNull
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
@@ -37,7 +38,7 @@ object HhdSettingsSerializer : KSerializer<HhdSettingsApiResponse> {
         val jObject = decoder.decodeJsonElement().jsonObject.getValue("hhd").jsonObject
 
         return HhdSettingsApiResponse(
-            settings = jObject.map { (_, jElement) ->
+            settings = jObject.mapValues { (_, jElement) ->
                 jElement.jsonObject.toContainer()
             }
         )
@@ -51,9 +52,10 @@ object HhdSettingsSerializer : KSerializer<HhdSettingsApiResponse> {
         val tags = this["tags"]!!.jsonArray.map { it.jsonPrimitive.content }
         val children = this["children"]
             ?.jsonObject
-            ?.mapNotNull { (_, child) ->
+            ?.mapValuesNutNull { (_, child) ->
                 child.jsonObject.toField()
-            } ?: listOf()
+            }
+            ?: emptyMap()
 
         return HhdContainerFieldApiResponse(
             title = title,

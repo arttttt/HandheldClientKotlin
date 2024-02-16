@@ -1,6 +1,6 @@
 package com.arttttt.hendheldclient.data.network.api
 
-import com.arttttt.hendheldclient.data.network.model.HhdSettingsApiResponse
+import com.arttttt.hendheldclient.data.network.model.settings.HhdSettingsApiResponse
 import com.arttttt.hendheldclient.domain.entity.HhdAuthToken
 import com.arttttt.hendheldclient.domain.entity.HhdPort
 import io.ktor.client.HttpClient
