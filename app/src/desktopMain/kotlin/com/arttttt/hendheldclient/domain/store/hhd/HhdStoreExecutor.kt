@@ -27,11 +27,13 @@ class HhdStoreExecutor(
         scope.launch {
             dispatch(HhdStore.Message.ProgressStarted)
 
-            val result = withContext(Dispatchers.IO) {
-                hhdRepository.getSettings()
-            }
-
-            result
+            dispatch(
+                HhdStore.Message.SectionsRetrieved(
+                    sections = withContext(Dispatchers.IO) {
+                        hhdRepository.getSettings()
+                    }
+                )
+            )
 
             dispatch(HhdStore.Message.ProgressFinished)
         }

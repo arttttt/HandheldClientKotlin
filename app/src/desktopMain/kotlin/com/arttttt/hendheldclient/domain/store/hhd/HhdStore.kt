@@ -21,6 +21,10 @@ interface HhdStore : Store<HhdStore.Intent, HhdStore.State, HhdStore.Label> {
 
          data object ProgressStarted : Message()
          data object ProgressFinished : Message()
+
+         data class SectionsRetrieved(
+             val sections: Map<String, SettingsSection>,
+         ) : Message()
      }
  
      sealed class Label

@@ -14,9 +14,6 @@ import com.arttttt.hendheldclient.di.repositoryModule
 import com.arttttt.hendheldclient.di.storeModule
 import com.arttttt.hendheldclient.ui.root.RootContent
 import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
-import org.koin.core.logger.Logger
-import org.koin.core.logger.MESSAGE
 
 @ExperimentalDecomposeApi
 fun main() {

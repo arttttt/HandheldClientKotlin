@@ -12,6 +12,9 @@ package com.arttttt.hendheldclient.domain.store.hhd
              is HhdStore.Message.ProgressFinished -> copy(
                  isInProgress = false,
              )
+             is HhdStore.Message.SectionsRetrieved -> copy(
+                 sections = msg.sections,
+             )
          }
      }
  }
