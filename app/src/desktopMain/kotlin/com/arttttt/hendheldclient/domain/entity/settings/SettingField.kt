@@ -17,13 +17,12 @@ sealed interface SettingField<T> {
 
 
     data class ActionField(
+        override val value: Boolean?,
         override val id: String,
         override val hint: String,
         override val tags: List<String>,
         override val title: String,
-    ) : SettingField<Unit> {
-        override val value: Unit = Unit
-    }
+    ) : SettingField<Boolean?>
 
     data class BooleanField(
         override val id: String,

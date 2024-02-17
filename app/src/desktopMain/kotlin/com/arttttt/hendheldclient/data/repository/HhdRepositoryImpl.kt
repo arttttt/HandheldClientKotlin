@@ -75,6 +75,7 @@ class HhdRepositoryImpl(
                         hint = value.hint,
                         tags = value.tags,
                         title = value.title,
+                        value = field?.nullableBoolean ?: value.default?.nullableBoolean
                     )
                     is HhdFieldApiResponse.BooleanPrimitive -> SettingField.BooleanField(
                         id = key,
@@ -102,6 +103,11 @@ class HhdRepositoryImpl(
             }
         }
     }
+
+    private val JsonElement.nullableBoolean: Boolean?
+        get() {
+            return this.takeIf { it != JsonNull }?.jsonPrimitive?.boolean
+        }
 
     private val JsonElement.nullableContent: String?
         get() {

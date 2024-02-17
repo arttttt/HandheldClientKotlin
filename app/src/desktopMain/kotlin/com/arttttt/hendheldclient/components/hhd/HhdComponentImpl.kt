@@ -41,15 +41,16 @@ class HhdComponentImpl(
                                     value = field.value,
                                 )
                                 is SettingField.ActionField -> ActionListItem(
-                                    title = field.title
+                                    title = field.title,
+                                    isEnabled = field.value == true,
                                 )
                                 is SettingField.BooleanField -> BooleanListItem(
                                     title = field.title,
-                                    isChecked = field.value
+                                    isChecked = field.value,
                                 )
                                 is SettingField.IntField -> IntListItem(
                                     title = field.title,
-                                    value = field.value.toString()
+                                    value = field.value.toString(),
                                 )
                             }
                         },

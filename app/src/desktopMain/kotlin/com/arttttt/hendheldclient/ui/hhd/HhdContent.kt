@@ -124,6 +124,7 @@ private fun ActionItemContent(item: ActionListItem) {
     Button(
         modifier = Modifier,
         onClick = {},
+        enabled = item.isEnabled,
     ) {
         Text(
             modifier = Modifier.fillMaxSize(),
