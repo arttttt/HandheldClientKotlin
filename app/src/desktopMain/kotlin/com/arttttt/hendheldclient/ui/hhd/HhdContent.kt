@@ -18,8 +18,10 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arttttt.hendheldclient.components.hhd.HhdComponent
@@ -62,6 +65,7 @@ fun HhdContent(component: HhdComponent) {
                         .fillMaxWidth()
                         .wrapContentHeight(),
                     item = item,
+                    onValueChanged = { parent, id, value ->}
                 )
             }
         }
@@ -72,6 +76,7 @@ fun HhdContent(component: HhdComponent) {
 private fun ContainerItemContent(
     modifier: Modifier,
     item: ContainerListItem,
+    onValueChanged: (String, String, String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -93,7 +98,18 @@ private fun ContainerItemContent(
                 is TextListItem -> TextItemContent(child)
                 is ActionListItem -> ActionItemContent(child)
                 is BooleanListItem -> BooleanItemContent(child)
-                is IntListItem -> IntItemContent(child)
+                is IntListItem -> {
+                    IntItemContent(
+                        item = child,
+                        onValueChanged = { value ->
+                            onValueChanged.invoke(
+                                item.title,
+                                child.title,
+                                value,
+                            )
+                        },
+                    )
+                }
             }
         }
     }
@@ -155,18 +171,20 @@ private fun BooleanItemContent(item: BooleanListItem) {
 }
 
 @Composable
-private fun IntItemContent(item: IntListItem) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            modifier = Modifier.weight(1f),
-            text = item.title
+private fun IntItemContent(
+    item: IntListItem,
+    onValueChanged: (String) -> Unit,
+) {
+    OutlinedTextField(
+        value = item.value,
+        onValueChange = onValueChanged,
+        label = {
+            Text(
+                text = item.title
+            )
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
         )
-
-        Spacer(Modifier.width(8.dp))
-
-        Text(item.value)
-    }
+    )
 }
