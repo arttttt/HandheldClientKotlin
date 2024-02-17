@@ -27,7 +27,7 @@ inline fun <reified T> T.koinScope(
     val modulesList = modules.toList()
 
     parentScopeID
-        ?.let(scope::getScope)
+        ?.let(KoinPlatform.getKoin()::getScope)
         ?.let { parentScope ->
             scope.linkTo(parentScope)
         }
