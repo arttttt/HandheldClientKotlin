@@ -60,16 +60,15 @@ class HhdRepositoryImpl(
     ): Map<String, SettingField<*>> {
         return buildMap {
             for ((key, value) in children) {
-                val field = fields[key] ?: continue
+                val field = fields[key]
 
                 val parsed = when (value) {
                     is HhdFieldApiResponse.Display -> SettingField.DisplayField(
                         id = key,
-                        value = field.jsonPrimitive.content,
+                        value = field?.nullableContent ?: value.default?.nullableContent,
                         hint = value.hint,
                         tags = value.tags,
                         title = value.title,
-                        default = value.default?.jsonPrimitive?.content,
                     )
                     is HhdFieldApiResponse.Action -> SettingField.ActionField(
                         id = key,
@@ -79,16 +78,14 @@ class HhdRepositoryImpl(
                     )
                     is HhdFieldApiResponse.BooleanPrimitive -> SettingField.BooleanField(
                         id = key,
-                        value = field.jsonPrimitive.boolean,
+                        value = field?.jsonPrimitive?.boolean ?: value.default,
                         hint = value.hint,
                         tags = value.tags,
                         title = value.title,
-                        default = value.default,
                     )
                     is HhdFieldApiResponse.IntPrimitive -> SettingField.IntField(
                         id = key,
-                        value = field.jsonPrimitive.int,
-                        default = value.default,
+                        value = field?.jsonPrimitive?.int ?: value.default,
                         hint = value.hint,
                         tags = value.tags,
                         title = value.title,
@@ -105,4 +102,9 @@ class HhdRepositoryImpl(
             }
         }
     }
+
+    private val JsonElement.nullableContent: String?
+        get() {
+            return this.takeIf { it != JsonNull }?.jsonPrimitive?.content
+        }
 }

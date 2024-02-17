@@ -38,6 +38,7 @@ class HhdComponentImpl(
                             when (field) {
                                 is SettingField.DisplayField -> TextListItem(
                                     title = field.title,
+                                    value = field.value,
                                 )
                                 is SettingField.ActionField -> ActionListItem(
                                     title = field.title

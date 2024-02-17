@@ -2,23 +2,24 @@ package com.arttttt.hendheldclient.ui.hhd
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arttttt.hendheldclient.components.hhd.HhdComponent
 import com.arttttt.hendheldclient.ui.hhd.list.model.ActionListItem
@@ -42,7 +44,7 @@ fun HhdContent(component: HhdComponent) {
 
     LazyVerticalStaggeredGrid(
         modifier = Modifier.fillMaxSize(),
-        columns = StaggeredGridCells.Fixed(2),
+        columns = StaggeredGridCells.Fixed(1),
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalItemSpacing = 8.dp
@@ -99,12 +101,36 @@ private fun ContainerItemContent(
 
 @Composable
 private fun TextItemContent(item: TextListItem) {
-    Text(item.title)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(
+                minHeight = ButtonDefaults.MinHeight,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(item.title)
+
+        if (item.value != null) {
+            Spacer(Modifier.width(8.dp))
+
+            Text(item.value)
+        }
+    }
 }
 
 @Composable
 private fun ActionItemContent(item: ActionListItem) {
-    Text(item.title)
+    Button(
+        modifier = Modifier,
+        onClick = {},
+    ) {
+        Text(
+            modifier = Modifier.fillMaxSize(),
+            text = item.title,
+            textAlign = TextAlign.Center,
+        )
+    }
 }
 
 @Composable
