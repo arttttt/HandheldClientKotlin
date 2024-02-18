@@ -11,4 +11,15 @@ interface HhdComponent : DecomposeComponent {
     )
 
     val states: StateFlow<UiState>
+
+    fun onValueUpdated(
+        parent: String,
+        id: String,
+        value: Any,
+    )
+
+    fun onResetClicked(
+        parent: String,
+        id: String,
+    )
 }

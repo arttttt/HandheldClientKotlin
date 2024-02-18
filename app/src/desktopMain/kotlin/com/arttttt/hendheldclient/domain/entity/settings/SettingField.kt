@@ -32,14 +32,14 @@ sealed interface SettingField<T> {
         override val title: String,
     ) : SettingField<Boolean>
 
-    data class IntField(
+    data class IntInputField(
         override val id: String,
-        override val value: Int,
+        override val value: String,
         override val hint: String,
         override val tags: List<String>,
         override val title: String,
         val min: Int,
         val max: Int,
         val step: Int?,
-    ) : SettingField<Int>
+    ) : SettingField<String>
 }

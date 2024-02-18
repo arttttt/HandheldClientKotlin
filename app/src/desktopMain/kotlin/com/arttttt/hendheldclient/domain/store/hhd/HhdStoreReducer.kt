@@ -15,6 +15,9 @@ package com.arttttt.hendheldclient.domain.store.hhd
              is HhdStore.Message.SectionsRetrieved -> copy(
                  sections = msg.sections,
              )
+             is HhdStore.Message.PendingChangesUpdated -> copy(
+                 pendingChanges = msg.pendingChanges,
+             )
          }
      }
  }

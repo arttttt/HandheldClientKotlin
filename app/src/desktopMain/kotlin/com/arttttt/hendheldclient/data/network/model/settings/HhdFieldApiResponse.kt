@@ -36,7 +36,7 @@ sealed interface HhdFieldApiResponse {
         @SerialName("title") val title: String,
         @SerialName("hint") val hint: String,
         @SerialName("tags") val tags: List<String>,
-        @SerialName("default") val default: Int,
+        @SerialName("default") val default: JsonElement,
         @SerialName("min") val min: Int,
         @SerialName("max") val max: Int,
         @SerialName("step") val step: JsonElement?,

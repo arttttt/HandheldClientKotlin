@@ -84,9 +84,9 @@ class HhdRepositoryImpl(
                         tags = value.tags,
                         title = value.title,
                     )
-                    is HhdFieldApiResponse.IntPrimitive -> SettingField.IntField(
+                    is HhdFieldApiResponse.IntPrimitive -> SettingField.IntInputField(
                         id = key,
-                        value = field?.jsonPrimitive?.int ?: value.default,
+                        value = field?.jsonPrimitive?.content ?: value.default.jsonPrimitive.content,
                         hint = value.hint,
                         tags = value.tags,
                         title = value.title,
