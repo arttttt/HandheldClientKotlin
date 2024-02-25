@@ -143,11 +143,15 @@ class HhdRepositoryImpl(
                         key = fieldKey,
                         container = value,
                     )
-                    is HhdFieldApiResponse2.Discrete -> {
-                        println(value)
-
-                        continue
-                    }
+                    is HhdFieldApiResponse2.Discrete -> SettingField2.DiscreteField(
+                        key = fieldKey,
+                        id = key,
+                        value = field?.jsonPrimitive?.int ?: value.default.jsonPrimitive.int,
+                        values = value.options.toSet(),
+                        hint = value.hint,
+                        tags = value.tags,
+                        title = value.title,
+                    )
                     is HhdFieldApiResponse2.Multiple -> {
                         println(value)
 

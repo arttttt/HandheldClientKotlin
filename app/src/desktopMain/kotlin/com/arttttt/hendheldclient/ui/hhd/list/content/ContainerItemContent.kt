@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.arttttt.hendheldclient.ui.hhd.list.model.ActionListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.BooleanListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.ContainerListItem
+import com.arttttt.hendheldclient.ui.hhd.list.model.DiscreteListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.IntListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.TextListItem
 
@@ -71,6 +72,11 @@ fun ContainerItemContent(
                                 child.id,
                             )
                         },
+                    )
+                }
+                is DiscreteListItem -> {
+                    DiscreteItemContent(
+                        item = child
                     )
                 }
             }

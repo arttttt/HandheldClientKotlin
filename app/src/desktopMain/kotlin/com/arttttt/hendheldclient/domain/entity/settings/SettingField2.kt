@@ -56,4 +56,14 @@ sealed interface SettingField2<T> {
         val max: Int,
         val step: Int?,
     ) : SettingField2<String>
+
+    data class DiscreteField(
+        override val key: FieldKey,
+        override val id: String,
+        override val value: Int,
+        override val hint: String,
+        override val tags: List<String>,
+        override val title: String,
+        val values: Set<Int>,
+    ) : SettingField2<Int>
 }
