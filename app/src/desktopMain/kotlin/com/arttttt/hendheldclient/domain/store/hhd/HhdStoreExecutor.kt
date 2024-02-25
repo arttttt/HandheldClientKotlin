@@ -7,6 +7,8 @@ import com.arttttt.hendheldclient.domain.repository.HhdRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.LinkedList
+import java.util.Queue
 
 /**
  * todo: provide dispatchers provider
@@ -43,10 +45,10 @@ class HhdStoreExecutor(
         key: FieldKey,
         value: Any,
     ) {
-        val reversedKeys = key.toReversedList()
+        val reversedKeys = key.toQueue()
 
         val field = findSettingField(
-            state = state(),
+            sections = state().sections,
             keys = reversedKeys,
         )
 
@@ -121,40 +123,52 @@ class HhdStoreExecutor(
         }
     }
 
-    private fun findSettingField(state: HhdStore.State, keys: List<String>): SettingField2<*>? {
+    private fun findSettingField(
+        sections: Map<String, SettingField2<*>>,
+        keys: Queue<String>,
+    ): SettingField2<*>? {
         var currentField: SettingField2<*>? = null
-        var sections = state.sections
+        var key = keys.poll()
 
-        for (key in keys) {
-            currentField = sections[key] ?: return null
+        while (key != null) {
+            currentField = sections[key] ?: break
 
-            if (currentField is SettingField2.SectionField) {
-                sections = currentField.value
-            } else if (currentField is SettingField2.Mode) {
-                val modeField = currentField.mode
-                if (modeField is SettingField2.SectionField) {
-                    sections = modeField.value
-                } else {
-                    return modeField
+            when (currentField) {
+                is SettingField2.SectionField -> {
+                    currentField = findSettingField(
+                        sections = currentField.value,
+                        keys = keys,
+                    )
                 }
-            } else {
-                if (keys.indexOf(key) < keys.size - 1) return null
+                is SettingField2.Mode -> {
+                    currentField = when (val mode = currentField.mode) {
+                        is SettingField2.SectionField -> findSettingField(
+                            sections = mode.value,
+                            keys = keys,
+                        )
+                        else -> mode
+                    }
+                }
+                else -> {}
             }
+
+            key = keys.poll()
         }
+
         return currentField
     }
 
-    private fun FieldKey.toReversedList(): List<String> {
-        return buildList {
-            var currentKey: FieldKey? = this@toReversedList
+    private fun FieldKey.toQueue(): Queue<String> {
+        return LinkedList(
+            buildList<String?> {
+                var currentKey: FieldKey? = this@toQueue
 
-            while (currentKey != null) {
-                if (currentKey.parent == null) break
+                while (currentKey != null) {
+                    this += currentKey.key
 
-                this += currentKey.key
-
-                currentKey = currentKey.parent
-            }
-        }.reversed()
+                    currentKey = currentKey.parent
+                }
+            }.reversed()
+        )
     }
 }
