@@ -153,6 +153,11 @@ class HhdRepositoryImpl(
 
                         continue
                     }
+                    is HhdFieldApiResponse2.Mode -> {
+                        println(value)
+
+                        continue
+                    }
                 }
 
                 put(

@@ -2,6 +2,7 @@ package com.arttttt.hendheldclient.data.network.serializers
 
 import com.arttttt.hendheldclient.data.network.model.settings.HhdFieldApiResponse2
 import com.arttttt.hendheldclient.data.network.model.settings.HhdSettingsApiResponse2
+import com.arttttt.hendheldclient.data.network.serializers.HhdSettingsSerializer2.toContainer
 import com.arttttt.hendheldclient.utils.mapValuesNutNull
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -57,6 +58,7 @@ object HhdSettingsSerializer2 : KSerializer<HhdSettingsApiResponse2> {
             "int" -> json.decodeFromJsonElement<HhdFieldApiResponse2.IntPrimitive>(this)
             "discrete" -> json.decodeFromJsonElement<HhdFieldApiResponse2.Discrete>(this)
             "multiple" -> json.decodeFromJsonElement<HhdFieldApiResponse2.Multiple>(this)
+            "mode" -> this.toMode()
             else -> {
                 println(
                     """
@@ -67,6 +69,27 @@ object HhdSettingsSerializer2 : KSerializer<HhdSettingsApiResponse2> {
                 null
             }
         }
+    }
+
+    private fun JsonObject.toMode(): HhdFieldApiResponse2.Mode {
+        val title = this["title"]!!.jsonPrimitive.content
+        val hint = this["hint"]!!.jsonPrimitive.content
+        val tags = this["tags"]!!.jsonArray.map { it.jsonPrimitive.content }
+        val default = this["default"]!!
+        val modes = this["modes"]
+            ?.jsonObject
+            ?.mapValuesNutNull { (_, child) ->
+                child.jsonObject.toField()
+            }
+            ?: emptyMap()
+
+        return HhdFieldApiResponse2.Mode(
+            title = title,
+            hint = hint,
+            tags = tags,
+            default = default,
+            modes = modes,
+        )
     }
 
     private fun JsonObject.toContainer(): HhdFieldApiResponse2.Container {
