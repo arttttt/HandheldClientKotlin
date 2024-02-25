@@ -15,7 +15,7 @@ class HhdStoreFactory(
          val initialState = HhdStore.State(
              isInProgress = false,
              sections = emptyMap(),
-             pendingChanges = emptyMap(),
+             pendingChanges2 = emptyMap(),
          )
  
          return object : HhdStore,

@@ -2,6 +2,7 @@ package com.arttttt.hendheldclient.ui.hhd
 
 import com.arttttt.hendheldclient.arch.Transformer
 import com.arttttt.hendheldclient.components.hhd.HhdComponent
+import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
 import com.arttttt.hendheldclient.domain.entity.settings.SettingField2
 import com.arttttt.hendheldclient.domain.store.hhd.HhdStore
 import com.arttttt.hendheldclient.ui.hhd.list.model.ActionListItem
@@ -20,28 +21,40 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         return HhdComponent.UiState(
             items = state
                 .sections
-                .mapNotNull { (_, field) -> field.toListItem() }
+                .mapNotNull { (_, field) -> field.toListItem(state) }
         )
     }
 
-    private fun SettingField2<*>.toListItem(): ListItem {
+    private fun SettingField2<*>.toListItem(
+        state: HhdStore.State,
+    ): ListItem {
         return when (val section = this) {
-            is SettingField2.SectionField -> section.toListItem()
+            is SettingField2.SectionField -> section.toListItem(
+                state = state,
+            )
             is SettingField2.DisplayField -> section.toListItem()
             is SettingField2.ActionField -> section.toListItem()
-            is SettingField2.BooleanField -> section.toListItem()
-            is SettingField2.IntInputField -> section.toListItem()
+            is SettingField2.BooleanField -> section.toListItem(
+                state = state,
+            )
+            is SettingField2.IntInputField -> section.toListItem(
+                state = state,
+            )
             is SettingField2.DiscreteField -> section.toListItem()
             is SettingField2.MultipleField -> section.toListItem()
-            is SettingField2.Mode -> section.toListItem()
+            is SettingField2.Mode -> section.toListItem(
+                state = state,
+            )
         }
     }
 
-    private fun SettingField2.SectionField.toListItem(): ListItem {
+    private fun SettingField2.SectionField.toListItem(
+        state: HhdStore.State,
+    ): ListItem {
         return ContainerListItem(
             id = this.key,
             title = this.title,
-            children = this.value.mapNotNull { (_, field) -> field.toListItem() }
+            children = this.value.mapNotNull { (_, field) -> field.toListItem(state) }
         )
     }
 
@@ -59,21 +72,35 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         )
     }
 
-    private fun SettingField2.BooleanField.toListItem(): ListItem {
+    private fun SettingField2.BooleanField.toListItem(
+        state: HhdStore.State,
+    ): ListItem {
         return BooleanListItem(
             id = this.key,
             title = this.title,
-            isChecked = false,
+            isChecked = getCorrectValue(
+                pendingChanges = state.pendingChanges2,
+            ),
         )
     }
 
-    private fun SettingField2.IntInputField.toListItem(): ListItem {
+    private fun SettingField2.IntInputField.toListItem(
+        state: HhdStore.State,
+    ): ListItem {
         return IntListItem(
             id = this.key,
             title = this.title,
-            value = "50",
-            error = null,
-            isValueOverwritten = false,
+            value = this
+                .getCorrectValue(
+                    pendingChanges = state.pendingChanges2,
+                )
+                .toString(),
+            error = this.getError(
+                pendingChanges = state.pendingChanges2,
+            ),
+            isValueOverwritten = this.isValueOverwritten(
+                pendingChanges = state.pendingChanges2,
+            )
         )
     }
 
@@ -95,19 +122,20 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         )
     }
 
-    private fun SettingField2.Mode.toListItem(): ListItem {
+    private fun SettingField2.Mode.toListItem(
+        state: HhdStore.State,
+    ): ListItem {
         return ModeListItem(
             id = this.key,
             title = this.title,
             children = listOf(
-                this.mode.toListItem()
+                this.mode.toListItem(state)
             )
         )
     }
 
     private fun <T> SettingField2<T>.getCorrectValue(
-        pendingChanges: Map<String, Map<String, Any?>>,
-        parent: String,
+        pendingChanges: Map<FieldKey, Any>,
     ): T {
         val mapperValue: (Any?) -> Any? = when (this) {
             is SettingField2.BooleanField -> {
@@ -133,42 +161,34 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
         return getCorrectValue(
             pendingChanges = pendingChanges,
-            parent = parent,
             overwrittenMapper = mapperValue as (Any?) -> T,
         )
     }
 
     private fun <T> SettingField2<T>.getCorrectValue(
-        pendingChanges: Map<String, Map<String, Any?>>,
-        parent: String,
+        pendingChanges: Map<FieldKey, Any>,
         overwrittenMapper: (Any?) -> T,
     ): T {
-        return if (isValueOverwritten(pendingChanges, parent, this)) {
+        return if (this.isValueOverwritten(pendingChanges)) {
             pendingChanges
-                .getValue(parent)
-                .getValue(key.key)
+                .getValue(this.key)
                 .let(overwrittenMapper)
         } else {
             value
         }
     }
 
-    @Suppress("ReplaceGetOrSet")
-    private fun isValueOverwritten(
-        pendingChanges: Map<String, Map<String, Any?>>,
-        parent: String,
-        field: SettingField2<*>,
+    private fun SettingField2<*>.isValueOverwritten(
+        pendingChanges: Map<FieldKey, Any>,
     ): Boolean {
-        return pendingChanges.get(parent)?.containsKey(field.key.key) == true
+        return pendingChanges.containsKey(this.key)
     }
 
     private fun SettingField2.IntInputField.getError(
-        pendingChanges: Map<String, Map<String, Any?>>,
-        parent: String,
+        pendingChanges: Map<FieldKey, Any>,
     ): String? {
         val currentValue = getCorrectValue(
             pendingChanges = pendingChanges,
-            parent = parent,
         ).toIntOrNull() ?: 0
 
         return when {
@@ -176,69 +196,4 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
             else -> null
         }
     }
-
-    /*ContainerListItem(
-                        id = section.id,
-                        title = section.title,
-                        children = section.value.mapNotNull { (_, field) ->
-                            when (field) {
-                                is SettingField2.DisplayField -> TextListItem(
-                                    title = field.title,
-                                    value = field.value,
-                                )
-
-                                is SettingField2.ActionField -> ActionListItem(
-                                    title = field.title,
-                                    isEnabled = field.value == true,
-                                )
-
-                                is SettingField2.BooleanField -> BooleanListItem(
-                                    id = field.id,
-                                    title = field.title,
-                                    isChecked = field.getCorrectValue(
-                                        pendingChanges = state.pendingChanges,
-                                        parent = section.id,
-                                    ),
-                                )
-
-                                is SettingField2.IntInputField -> IntListItem(
-                                    id = field.id,
-                                    title = field.title,
-                                    value = field
-                                        .getCorrectValue(
-                                            pendingChanges = state.pendingChanges,
-                                            parent = section.id,
-                                        )
-                                        .toString(),
-                                    error = field.getError(
-                                        pendingChanges = state.pendingChanges,
-                                        parent = section.id,
-                                    ),
-                                    isValueOverwritten = isValueOverwritten(
-                                        pendingChanges = state.pendingChanges,
-                                        parent = section.id,
-                                        field = field,
-                                    ),
-                                )
-                                is SettingField2.DiscreteField -> DiscreteListItem(
-                                    id = field.id,
-                                    title = field.title,
-                                    value = field.value,
-                                    values = field.values,
-                                )
-                                is SettingField2.MultipleField -> MultipleListItem(
-                                    id = field.id,
-                                    title = field.title,
-                                    value = field.value,
-                                    values = field.values,
-                                )
-                                is SettingField2.Mode -> {
-                                    println(field)
-
-                                    null
-                                }
-                                is SettingField2.SectionField -> null
-                            }
-                        },
-                    )*/
 }

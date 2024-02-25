@@ -37,27 +37,19 @@ class HhdComponentImpl(
         )
 
     override fun onValueUpdated(key: FieldKey, value: Any) {
-    }
-
-    override fun onResetClicked(key: FieldKey) {
-    }
-
-    /*    override fun onValueUpdated(parent: String, id: String, value: Any) {
         hhdStore.accept(
-            HhdStore.Intent.SetValue(
-                parent = parent,
-                id = id,
+            HhdStore.Intent.SetValue2(
+                key = key,
                 value = value,
             )
         )
     }
 
-    override fun onResetClicked(parent: String, id: String) {
+    override fun onResetClicked(key: FieldKey) {
         hhdStore.accept(
-            HhdStore.Intent.RemoveOverride(
-                parent = parent,
-                id = id,
+            HhdStore.Intent.RemoveOverride2(
+                key = key,
             )
         )
-    }*/
+    }
 }
