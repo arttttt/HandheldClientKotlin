@@ -1,7 +1,6 @@
 package com.arttttt.hendheldclient.domain.store.hhd
 
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.arttttt.hendheldclient.domain.entity.settings.SettingField
 import com.arttttt.hendheldclient.domain.repository.HhdRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,7 +69,7 @@ class HhdStoreExecutor(
         id: String,
         value: Any,
     ) {
-        val section = state().sections.getValue(parent)
+        /*val section = state().sections.getValue(parent)
         val field = section.fields.getValue(id)
 
         when (field) {
@@ -124,7 +123,7 @@ class HhdStoreExecutor(
             }
             is SettingField.ActionField -> null
             is SettingField.DisplayField -> null
-        }
+        }*/
     }
 
     private fun loadSettings() {

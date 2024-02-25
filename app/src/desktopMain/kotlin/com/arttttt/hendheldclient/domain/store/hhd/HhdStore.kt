@@ -1,13 +1,13 @@
 package com.arttttt.hendheldclient.domain.store.hhd
  
  import com.arkivanov.mvikotlin.core.store.Store
- import com.arttttt.hendheldclient.domain.entity.settings.SettingsSection
+ import com.arttttt.hendheldclient.domain.entity.settings.SettingField2
 
 interface HhdStore : Store<HhdStore.Intent, HhdStore.State, HhdStore.Label> {
  
      data class State(
          val isInProgress: Boolean,
-         val sections: Map<String, SettingsSection>,
+         val sections: Map<String, SettingField2<*>>,
          val pendingChanges: Map<String, Map<String, Any?>>,
      )
  
@@ -35,7 +35,7 @@ interface HhdStore : Store<HhdStore.Intent, HhdStore.State, HhdStore.Label> {
          data object ProgressFinished : Message()
 
          data class SectionsRetrieved(
-             val sections: Map<String, SettingsSection>,
+             val sections: Map<String, SettingField2<*>>,
          ) : Message()
 
          data class PendingChangesUpdated(

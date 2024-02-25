@@ -1,12 +1,21 @@
 package com.arttttt.hendheldclient.domain.entity.settings
 
-sealed interface SettingField<T> {
+sealed interface SettingField2<T> {
     val key: FieldKey
     val id: String
     val value: T
     val hint: String
     val tags: List<String>
     val title: String
+
+    data class SectionField(
+        override val key: FieldKey,
+        override val id: String,
+        override val title: String,
+        override val tags: List<String>,
+        override val hint: String,
+        override val value: Map<String, SettingField2<*>>
+    ) : SettingField2<Map<String, SettingField2<*>>>
 
     data class DisplayField(
         override val key: FieldKey,
@@ -15,7 +24,7 @@ sealed interface SettingField<T> {
         override val hint: String,
         override val tags: List<String>,
         override val title: String,
-    ) : SettingField<String?>
+    ) : SettingField2<String?>
 
 
     data class ActionField(
@@ -25,7 +34,7 @@ sealed interface SettingField<T> {
         override val hint: String,
         override val tags: List<String>,
         override val title: String,
-    ) : SettingField<Boolean?>
+    ) : SettingField2<Boolean?>
 
     data class BooleanField(
         override val key: FieldKey,
@@ -34,7 +43,7 @@ sealed interface SettingField<T> {
         override val hint: String,
         override val tags: List<String>,
         override val title: String,
-    ) : SettingField<Boolean>
+    ) : SettingField2<Boolean>
 
     data class IntInputField(
         override val key: FieldKey,
@@ -46,5 +55,5 @@ sealed interface SettingField<T> {
         val min: Int,
         val max: Int,
         val step: Int?,
-    ) : SettingField<String>
+    ) : SettingField2<String>
 }
