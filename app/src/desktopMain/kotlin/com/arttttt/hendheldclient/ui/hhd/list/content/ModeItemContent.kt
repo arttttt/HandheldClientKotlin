@@ -23,11 +23,9 @@ import com.arttttt.hendheldclient.ui.hhd.list.model.MultipleListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.TextListItem
 
 @Composable
-fun ContainerItemContent(
+fun ModeItemContent(
     modifier: Modifier,
-    item: ContainerListItem,
-    onValueChanged: (String, String, Any) -> Unit,
-    onResetClicked: (String, String) -> Unit
+    item: ModeListItem,
 ) {
     Column(
         modifier = modifier
@@ -52,11 +50,7 @@ fun ContainerItemContent(
                     BooleanItemContent(
                         item = child,
                         onValueChanged = { value ->
-                            onValueChanged.invoke(
-                                item.id,
-                                child.id,
-                                value,
-                            )
+
                         }
                     )
                 }
@@ -64,17 +58,10 @@ fun ContainerItemContent(
                     IntInputItemContent(
                         item = child,
                         onValueChanged = { value ->
-                            onValueChanged.invoke(
-                                item.id,
-                                child.id,
-                                value,
-                            )
+
                         },
                         onResetClicked = {
-                            onResetClicked.invoke(
-                                item.id,
-                                child.id,
-                            )
+
                         },
                     )
                 }
@@ -88,12 +75,14 @@ fun ContainerItemContent(
                         item = child,
                     )
                 }
-                is ModeListItem -> {
-                    ModeItemContent(
+                is ContainerListItem -> {
+                    ContainerItemContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight(),
                         item = child,
+                        onValueChanged = { _, _, _ -> },
+                        onResetClicked = { _, _ -> },
                     )
                 }
             }

@@ -161,11 +161,19 @@ class HhdRepositoryImpl(
                         title = value.title,
                         values = value.options,
                     )
-                    is HhdFieldApiResponse2.Mode -> {
-                        println(value)
-
-                        continue
-                    }
+                    is HhdFieldApiResponse2.Mode -> SettingField2.Mode(
+                        key = fieldKey,
+                        id = key,
+                        value = field?.jsonPrimitive?.content ?: value.default.jsonPrimitive.content,
+                        hint = value.hint,
+                        tags = value.tags,
+                        title = value.title,
+                        modes = createFields(
+                            rootKey = fieldKey,
+                            fields = emptyMap(),
+                            children = value.modes,
+                        ),
+                    )
                 }
 
                 put(

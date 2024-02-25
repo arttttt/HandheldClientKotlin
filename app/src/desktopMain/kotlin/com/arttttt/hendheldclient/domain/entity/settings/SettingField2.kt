@@ -76,4 +76,20 @@ sealed interface SettingField2<T> {
         override val title: String,
         val values: Map<String, String>,
     ) : SettingField2<String>
+
+    data class Mode(
+        override val key: FieldKey,
+        override val id: String,
+        override val value: String,
+        override val hint: String,
+        override val tags: List<String>,
+        override val title: String,
+        val modes: Map<String, SettingField2<*>>,
+    ) : SettingField2<String> {
+
+        val mode: SettingField2<*>
+            get() {
+                return modes.getValue(value)
+            }
+    }
 }
