@@ -1,6 +1,7 @@
 package com.arttttt.hendheldclient.domain.entity.settings
 
 sealed interface SettingField<T> {
+    val key: FieldKey
     val id: String
     val value: T
     val hint: String
@@ -8,6 +9,7 @@ sealed interface SettingField<T> {
     val title: String
 
     data class DisplayField(
+        override val key: FieldKey,
         override val id: String,
         override val value: String?,
         override val hint: String,
@@ -17,6 +19,7 @@ sealed interface SettingField<T> {
 
 
     data class ActionField(
+        override val key: FieldKey,
         override val value: Boolean?,
         override val id: String,
         override val hint: String,
@@ -25,6 +28,7 @@ sealed interface SettingField<T> {
     ) : SettingField<Boolean?>
 
     data class BooleanField(
+        override val key: FieldKey,
         override val id: String,
         override val value: Boolean,
         override val hint: String,
@@ -33,6 +37,7 @@ sealed interface SettingField<T> {
     ) : SettingField<Boolean>
 
     data class IntInputField(
+        override val key: FieldKey,
         override val id: String,
         override val value: String,
         override val hint: String,

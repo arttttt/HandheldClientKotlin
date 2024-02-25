@@ -1,6 +1,7 @@
 package com.arttttt.hendheldclient.data.network.serializers
 
 import com.arttttt.hendheldclient.data.network.model.settings.HhdFieldApiResponse2
+import com.arttttt.hendheldclient.data.network.model.settings.HhdSettingsApiResponse2
 import com.arttttt.hendheldclient.utils.mapValuesNutNull
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -16,7 +17,7 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 @Suppress("NAME_SHADOWING")
-object HhdSettingsSerializer2 : KSerializer<HhdFieldApiResponse2> {
+object HhdSettingsSerializer2 : KSerializer<HhdSettingsApiResponse2> {
 
     private const val INCORRECT_DECODER_MESSAGE = "decoder is not a json decoder"
 
@@ -24,24 +25,27 @@ object HhdSettingsSerializer2 : KSerializer<HhdFieldApiResponse2> {
         ignoreUnknownKeys = true
     }
 
-    override val descriptor: SerialDescriptor = buildClassSerialDescriptor("HhdFieldApiResponse2") {
+    override val descriptor: SerialDescriptor = buildClassSerialDescriptor("HhdSettingsApiResponse2") {
     }
 
-    override fun deserialize(decoder: Decoder): HhdFieldApiResponse2 {
+    override fun deserialize(decoder: Decoder): HhdSettingsApiResponse2 {
         val decoder = decoder as? JsonDecoder ?: throw IllegalArgumentException(INCORRECT_DECODER_MESSAGE)
 
         val result = decoder
             .decodeJsonElement()
             .jsonObject
-            .map { (_, jElement) ->
-                jElement.jsonObject.toField()
+            .mapValuesNutNull { (_, rootJElement) ->
+                rootJElement.jsonObject.mapValuesNutNull { (_, jElement) ->
+                    jElement.jsonObject.toField()
+                }
             }
-            .filterNotNull()
 
-        return result.first()
+        return HhdSettingsApiResponse2(
+            settings = result
+        )
     }
 
-    override fun serialize(encoder: Encoder, value: HhdFieldApiResponse2) {}
+    override fun serialize(encoder: Encoder, value: HhdSettingsApiResponse2) {}
 
     private fun JsonObject.toField(): HhdFieldApiResponse2? {
         val type = this["type"]?.jsonPrimitive?.content

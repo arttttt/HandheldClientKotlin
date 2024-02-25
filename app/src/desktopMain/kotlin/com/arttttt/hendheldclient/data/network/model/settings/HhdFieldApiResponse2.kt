@@ -1,11 +1,10 @@
 package com.arttttt.hendheldclient.data.network.model.settings
 
-import com.arttttt.hendheldclient.data.network.serializers.HhdSettingsSerializer2
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
-@Serializable(with = HhdSettingsSerializer2::class)
+@Serializable
 sealed interface HhdFieldApiResponse2 {
 
     @Serializable
