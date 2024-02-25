@@ -66,4 +66,14 @@ sealed interface SettingField2<T> {
         override val title: String,
         val values: Set<Int>,
     ) : SettingField2<Int>
+
+    data class MultipleField(
+        override val key: FieldKey,
+        override val id: String,
+        override val value: String,
+        override val hint: String,
+        override val tags: List<String>,
+        override val title: String,
+        val values: Map<String, String>,
+    ) : SettingField2<String>
 }

@@ -152,11 +152,15 @@ class HhdRepositoryImpl(
                         tags = value.tags,
                         title = value.title,
                     )
-                    is HhdFieldApiResponse2.Multiple -> {
-                        println(value)
-
-                        continue
-                    }
+                    is HhdFieldApiResponse2.Multiple -> SettingField2.MultipleField(
+                        key = fieldKey,
+                        id = key,
+                        value = field?.jsonPrimitive?.content ?: value.default.jsonPrimitive.content,
+                        hint = value.hint,
+                        tags = value.tags,
+                        title = value.title,
+                        values = value.options,
+                    )
                     is HhdFieldApiResponse2.Mode -> {
                         println(value)
 

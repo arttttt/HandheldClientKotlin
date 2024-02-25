@@ -16,6 +16,7 @@ import com.arttttt.hendheldclient.ui.hhd.list.model.BooleanListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.ContainerListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.DiscreteListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.IntListItem
+import com.arttttt.hendheldclient.ui.hhd.list.model.MultipleListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.TextListItem
 
 @Composable
@@ -77,6 +78,11 @@ fun ContainerItemContent(
                 is DiscreteListItem -> {
                     DiscreteItemContent(
                         item = child
+                    )
+                }
+                is MultipleListItem -> {
+                    MultipleItemContent(
+                        item = child,
                     )
                 }
             }

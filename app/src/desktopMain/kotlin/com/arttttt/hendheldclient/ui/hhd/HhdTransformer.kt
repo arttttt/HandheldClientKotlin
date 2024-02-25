@@ -9,6 +9,7 @@ import com.arttttt.hendheldclient.ui.hhd.list.model.BooleanListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.ContainerListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.DiscreteListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.IntListItem
+import com.arttttt.hendheldclient.ui.hhd.list.model.MultipleListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.TextListItem
 import com.arttttt.hendheldclient.utils.mapValuesNutNull
 
@@ -64,6 +65,12 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
                                     ),
                                 )
                                 is SettingField2.DiscreteField -> DiscreteListItem(
+                                    id = field.id,
+                                    title = field.title,
+                                    value = field.value,
+                                    values = field.values,
+                                )
+                                is SettingField2.MultipleField -> MultipleListItem(
                                     id = field.id,
                                     title = field.title,
                                     value = field.value,
