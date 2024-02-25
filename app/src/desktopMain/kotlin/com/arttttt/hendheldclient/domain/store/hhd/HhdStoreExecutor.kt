@@ -46,50 +46,20 @@ class HhdStoreExecutor(
         key: FieldKey,
         value: Any,
     ) {
-        val reversedKeys = key.toQueue()
-
-        val field = findSettingField(
-            fields = state().fields,
-            keys = reversedKeys,
+        dispatch(
+            HhdStore.Message.PendingChangesUpdated2(
+                pendingChanges = state()
+                    .pendingChanges2
+                    .toMutableMap()
+                    .apply {
+                        put(
+                            key = key,
+                            value = value,
+                        )
+                    }
+                    .toMap()
+            )
         )
-
-        when (field) {
-            is SettingField2.IntInputField -> {
-                dispatch(
-                    HhdStore.Message.PendingChangesUpdated2(
-                        pendingChanges = state()
-                            .pendingChanges2
-                            .toMutableMap()
-                            .apply {
-                                put(
-                                    key = key,
-                                    value = value,
-                                )
-                            }
-                            .toMap()
-                    )
-                )
-            }
-
-            is SettingField2.BooleanField -> {
-                dispatch(
-                    HhdStore.Message.PendingChangesUpdated2(
-                        pendingChanges = state()
-                            .pendingChanges2
-                            .toMutableMap()
-                            .apply {
-                                put(
-                                    key = key,
-                                    value = value
-                                )
-                            }
-                            .toMap()
-                    )
-                )
-            }
-
-            else -> {}
-        }
     }
 
     private fun removeOverrides2(

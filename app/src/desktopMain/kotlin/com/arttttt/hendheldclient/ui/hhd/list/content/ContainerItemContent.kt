@@ -78,12 +78,24 @@ fun ContainerItemContent(
                 }
                 is DiscreteListItem -> {
                     DiscreteItemContent(
-                        item = child
+                        item = child,
+                        onValueChanged = { value ->
+                            onValueChanged.invoke(
+                                child.id,
+                                value
+                            )
+                        },
                     )
                 }
                 is MultipleListItem -> {
                     MultipleItemContent(
                         item = child,
+                        onValueChanged = { value ->
+                            onValueChanged.invoke(
+                                child.id,
+                                value
+                            )
+                        },
                     )
                 }
                 is ModeListItem -> {

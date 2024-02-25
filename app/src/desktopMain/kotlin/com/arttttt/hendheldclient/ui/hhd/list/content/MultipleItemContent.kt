@@ -18,14 +18,11 @@ import com.arttttt.hendheldclient.ui.hhd.list.model.MultipleListItem
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MultipleItemContent(
-    item: MultipleListItem
+    item: MultipleListItem,
+    onValueChanged: (Any) -> Unit,
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
-    }
-
-    var selectedIndex by remember {
-        mutableStateOf(0)
     }
 
     ExposedDropdownMenuBox(
@@ -35,8 +32,8 @@ fun MultipleItemContent(
     ) {
         OutlinedTextField(
             modifier = Modifier,
-            value = item.values.values.elementAt(selectedIndex),
-            onValueChange = { },
+            value = item.value,
+            onValueChange = {},
             readOnly = true,
             label = { Text(item.title) },
             trailingIcon = {
@@ -52,11 +49,11 @@ fun MultipleItemContent(
                 isExpanded = false
             }
         ) {
-            item.values.entries.forEachIndexed { index, (key, value) ->
+            item.values.entries.forEach { (_, value) ->
                 DropdownMenuItem(
                     onClick = {
                         isExpanded = false
-                        selectedIndex = index
+                        onValueChanged.invoke(value)
                     },
                 ) {
                     Text(value)

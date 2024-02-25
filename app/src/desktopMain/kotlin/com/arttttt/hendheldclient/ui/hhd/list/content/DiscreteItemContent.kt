@@ -17,14 +17,11 @@ import com.arttttt.hendheldclient.ui.hhd.list.model.DiscreteListItem
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DiscreteItemContent(
-    item: DiscreteListItem
+    item: DiscreteListItem,
+    onValueChanged: (Any) -> Unit,
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
-    }
-
-    var selectedIndex by remember {
-        mutableStateOf(0)
     }
 
     ExposedDropdownMenuBox(
@@ -34,7 +31,7 @@ fun DiscreteItemContent(
     ) {
         OutlinedTextField(
             modifier = Modifier,
-            value = item.values.elementAt(selectedIndex).toString(),
+            value = item.value.toString(),
             onValueChange = { },
             readOnly = true,
             label = { Text(item.title) },
@@ -51,11 +48,11 @@ fun DiscreteItemContent(
                 isExpanded = false
             }
         ) {
-            item.values.forEachIndexed { index, value ->
+            item.values.forEach { value ->
                 DropdownMenuItem(
                     onClick = {
                         isExpanded = false
-                        selectedIndex = index
+                        onValueChanged.invoke(value)
                     },
                 ) {
                     Text(value.toString())

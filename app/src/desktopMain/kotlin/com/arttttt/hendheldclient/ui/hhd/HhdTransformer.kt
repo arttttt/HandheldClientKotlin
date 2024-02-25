@@ -45,8 +45,12 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
             is SettingField2.IntInputField -> section.toListItem(
                 state = state,
             )
-            is SettingField2.DiscreteField -> section.toListItem()
-            is SettingField2.MultipleField -> section.toListItem()
+            is SettingField2.DiscreteField -> section.toListItem(
+                state = state
+            )
+            is SettingField2.MultipleField -> section.toListItem(
+                state = state,
+            )
             is SettingField2.Mode -> section.toListItem(
                 state = state,
             )
@@ -109,20 +113,28 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         )
     }
 
-    private fun SettingField2.DiscreteField.toListItem(): ListItem {
+    private fun SettingField2.DiscreteField.toListItem(
+        state: HhdStore.State,
+    ): ListItem {
         return DiscreteListItem(
             id = this.key,
             title = this.title,
-            value = this.value,
+            value = getCorrectValue(
+                pendingChanges = state.pendingChanges2,
+            ),
             values = this.values,
         )
     }
 
-    private fun SettingField2.MultipleField.toListItem(): ListItem {
+    private fun SettingField2.MultipleField.toListItem(
+        state: HhdStore.State,
+    ): ListItem {
         return MultipleListItem(
             id = this.key,
             title = this.title,
-            value = this.value,
+            value = getCorrectValue(
+                pendingChanges = state.pendingChanges2,
+            ),
             values = this.values,
         )
     }
