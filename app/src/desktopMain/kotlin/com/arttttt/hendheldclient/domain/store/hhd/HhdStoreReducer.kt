@@ -13,7 +13,7 @@ package com.arttttt.hendheldclient.domain.store.hhd
                  isInProgress = false,
              )
              is HhdStore.Message.SectionsRetrieved -> copy(
-                 sections = msg.sections,
+                 fields = msg.fields,
              )
              is HhdStore.Message.PendingChangesUpdated2 -> copy(
                  pendingChanges2 = msg.pendingChanges,

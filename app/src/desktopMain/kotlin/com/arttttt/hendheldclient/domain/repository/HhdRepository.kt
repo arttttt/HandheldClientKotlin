@@ -1,8 +1,8 @@
 package com.arttttt.hendheldclient.domain.repository
 
-import com.arttttt.hendheldclient.domain.entity.settings.SettingField2
+import com.arttttt.hendheldclient.domain.entity.settings.SettingFieldRoot
 
 interface HhdRepository {
 
-    suspend fun getSettings(): Map<String, SettingField2<*>>
+    suspend fun getSettings(): Map<String, SettingFieldRoot>
 }

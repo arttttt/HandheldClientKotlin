@@ -20,8 +20,13 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
     override fun invoke(state: HhdStore.State): HhdComponent.UiState {
         return HhdComponent.UiState(
             items = state
-                .sections
-                .mapNotNull { (_, field) -> field.toListItem(state) }
+                .fields
+                .mapNotNull { (_, fieldRoot) ->
+                    fieldRoot.items.mapNotNull { (_, field) ->
+                        field.toListItem(state)
+                    }
+                }
+                .flatten()
         )
     }
 

@@ -6,6 +6,7 @@ import com.arttttt.hendheldclient.data.network.model.settings.HhdSettingsApiResp
 import com.arttttt.hendheldclient.data.network.model.state.HhdStateApiResponse
 import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
 import com.arttttt.hendheldclient.domain.entity.settings.SettingField2
+import com.arttttt.hendheldclient.domain.entity.settings.SettingFieldRoot
 import com.arttttt.hendheldclient.domain.repository.HhdRepository
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
@@ -17,11 +18,11 @@ class HhdRepositoryImpl(
     private val api: HhdApi,
 ) : HhdRepository {
 
-    override suspend fun getSettings(): Map<String, SettingField2<*>> {
+    override suspend fun getSettings(): Map<String, SettingFieldRoot> {
         val settings = api.getSettings()
 
         val state = api.getState()
-
+        
         return mapToEntity(
             settings = settings,
             state = state,
@@ -31,7 +32,7 @@ class HhdRepositoryImpl(
     private fun mapToEntity(
         settings: HhdSettingsApiResponse2,
         state: HhdStateApiResponse,
-    ): Map<String, SettingField2<*>> {
+    ): Map<String, SettingFieldRoot> {
         return buildMap {
             for ((key, value) in settings.settings) {
                 val rootKey = FieldKey(
@@ -39,10 +40,14 @@ class HhdRepositoryImpl(
                     key = key,
                 )
 
-                putAll(
-                    parseRootData(
-                        rootKey = rootKey,
-                        children = value,
+                put(
+                    key,
+                    SettingFieldRoot(
+                       key = rootKey,
+                        items = parseRootData(
+                            rootKey = rootKey,
+                            children = value,
+                        )
                     )
                 )
             }
