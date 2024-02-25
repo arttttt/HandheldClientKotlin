@@ -143,6 +143,7 @@ class HhdRepositoryImpl(
                         key = fieldKey,
                         container = value,
                     )
+                    is HhdFieldApiResponse2.Discrete -> continue
                 }
 
                 put(

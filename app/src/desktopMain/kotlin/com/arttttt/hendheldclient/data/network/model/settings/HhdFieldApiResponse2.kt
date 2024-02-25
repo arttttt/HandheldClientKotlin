@@ -49,4 +49,13 @@ sealed interface HhdFieldApiResponse2 {
         @SerialName("max") val max: Int,
         @SerialName("step") val step: JsonElement?,
     ) : HhdFieldApiResponse2
+
+    @Serializable
+    data class Discrete(
+        @SerialName("title") val title: String,
+        @SerialName("hint") val hint: String,
+        @SerialName("tags") val tags: List<String>,
+        @SerialName("default") val default: JsonElement,
+        @SerialName("options") val options: List<Int>
+    ) : HhdFieldApiResponse2
 }

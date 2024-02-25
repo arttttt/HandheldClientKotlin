@@ -55,7 +55,16 @@ object HhdSettingsSerializer2 : KSerializer<HhdSettingsApiResponse2> {
             "action" -> json.decodeFromJsonElement<HhdFieldApiResponse2.Action>(this)
             "bool" -> json.decodeFromJsonElement<HhdFieldApiResponse2.BooleanPrimitive>(this)
             "int" -> json.decodeFromJsonElement<HhdFieldApiResponse2.IntPrimitive>(this)
-            else -> null
+            "discrete" -> json.decodeFromJsonElement<HhdFieldApiResponse2.Discrete>(this)
+            else -> {
+                println(
+                    """
+                        unsupported type: $type
+                    """.trimIndent()
+                )
+
+                null
+            }
         }
     }
 
