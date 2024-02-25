@@ -56,6 +56,7 @@ object HhdSettingsSerializer2 : KSerializer<HhdSettingsApiResponse2> {
             "bool" -> json.decodeFromJsonElement<HhdFieldApiResponse2.BooleanPrimitive>(this)
             "int" -> json.decodeFromJsonElement<HhdFieldApiResponse2.IntPrimitive>(this)
             "discrete" -> json.decodeFromJsonElement<HhdFieldApiResponse2.Discrete>(this)
+            "multiple" -> json.decodeFromJsonElement<HhdFieldApiResponse2.Multiple>(this)
             else -> {
                 println(
                     """

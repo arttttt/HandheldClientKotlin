@@ -143,7 +143,16 @@ class HhdRepositoryImpl(
                         key = fieldKey,
                         container = value,
                     )
-                    is HhdFieldApiResponse2.Discrete -> continue
+                    is HhdFieldApiResponse2.Discrete -> {
+                        println(value)
+
+                        continue
+                    }
+                    is HhdFieldApiResponse2.Multiple -> {
+                        println(value)
+
+                        continue
+                    }
                 }
 
                 put(

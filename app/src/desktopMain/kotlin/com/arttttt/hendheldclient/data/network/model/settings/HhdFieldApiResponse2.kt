@@ -58,4 +58,13 @@ sealed interface HhdFieldApiResponse2 {
         @SerialName("default") val default: JsonElement,
         @SerialName("options") val options: List<Int>
     ) : HhdFieldApiResponse2
+
+    @Serializable
+    data class Multiple(
+        @SerialName("title") val title: String,
+        @SerialName("hint") val hint: String,
+        @SerialName("tags") val tags: List<String>,
+        @SerialName("default") val default: JsonElement,
+        @SerialName("options") val options: Map<String, String>
+    ) : HhdFieldApiResponse2
 }
