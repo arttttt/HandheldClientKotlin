@@ -1,6 +1,7 @@
 package com.arttttt.hendheldclient.components.hhd
 
 import com.arttttt.hendheldclient.arch.DecomposeComponent
+import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
 import com.arttttt.hendheldclient.utils.ListItem
 import kotlinx.coroutines.flow.StateFlow
 
@@ -13,13 +14,11 @@ interface HhdComponent : DecomposeComponent {
     val states: StateFlow<UiState>
 
     fun onValueUpdated(
-        parent: String,
-        id: String,
+        key: FieldKey,
         value: Any,
     )
 
     fun onResetClicked(
-        parent: String,
-        id: String,
+        key: FieldKey
     )
 }

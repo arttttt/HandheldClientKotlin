@@ -77,7 +77,6 @@ class HhdRepositoryImpl(
     ): SettingField2<*> {
         return SettingField2.SectionField(
             key = key,
-            id = key.key,
             title = container.title,
             tags = container.tags,
             hint = container.hint,
@@ -106,7 +105,6 @@ class HhdRepositoryImpl(
                 val parsed = when (value) {
                     is HhdFieldApiResponse2.Display -> SettingField2.DisplayField(
                         key = fieldKey,
-                        id = key,
                         value = field?.nullableContent ?: value.default?.nullableContent,
                         hint = value.hint,
                         tags = value.tags,
@@ -114,7 +112,6 @@ class HhdRepositoryImpl(
                     )
                     is HhdFieldApiResponse2.Action -> SettingField2.ActionField(
                         key = fieldKey,
-                        id = key,
                         hint = value.hint,
                         tags = value.tags,
                         title = value.title,
@@ -122,7 +119,6 @@ class HhdRepositoryImpl(
                     )
                     is HhdFieldApiResponse2.BooleanPrimitive -> SettingField2.BooleanField(
                         key = fieldKey,
-                        id = key,
                         value = field?.jsonPrimitive?.boolean ?: value.default,
                         hint = value.hint,
                         tags = value.tags,
@@ -130,7 +126,6 @@ class HhdRepositoryImpl(
                     )
                     is HhdFieldApiResponse2.IntPrimitive -> SettingField2.IntInputField(
                         key = fieldKey,
-                        id = key,
                         value = field?.jsonPrimitive?.content ?: value.default.jsonPrimitive.content,
                         hint = value.hint,
                         tags = value.tags,
@@ -145,7 +140,6 @@ class HhdRepositoryImpl(
                     )
                     is HhdFieldApiResponse2.Discrete -> SettingField2.DiscreteField(
                         key = fieldKey,
-                        id = key,
                         value = field?.jsonPrimitive?.int ?: value.default.jsonPrimitive.int,
                         values = value.options.toSet(),
                         hint = value.hint,
@@ -154,7 +148,6 @@ class HhdRepositoryImpl(
                     )
                     is HhdFieldApiResponse2.Multiple -> SettingField2.MultipleField(
                         key = fieldKey,
-                        id = key,
                         value = field?.jsonPrimitive?.content ?: value.default.jsonPrimitive.content,
                         hint = value.hint,
                         tags = value.tags,
@@ -163,7 +156,6 @@ class HhdRepositoryImpl(
                     )
                     is HhdFieldApiResponse2.Mode -> SettingField2.Mode(
                         key = fieldKey,
-                        id = key,
                         value = field?.jsonPrimitive?.content ?: value.default.jsonPrimitive.content,
                         hint = value.hint,
                         tags = value.tags,

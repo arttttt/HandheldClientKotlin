@@ -2,7 +2,6 @@ package com.arttttt.hendheldclient.domain.entity.settings
 
 sealed interface SettingField2<T> {
     val key: FieldKey
-    val id: String
     val value: T
     val hint: String
     val tags: List<String>
@@ -10,7 +9,6 @@ sealed interface SettingField2<T> {
 
     data class SectionField(
         override val key: FieldKey,
-        override val id: String,
         override val title: String,
         override val tags: List<String>,
         override val hint: String,
@@ -19,7 +17,6 @@ sealed interface SettingField2<T> {
 
     data class DisplayField(
         override val key: FieldKey,
-        override val id: String,
         override val value: String?,
         override val hint: String,
         override val tags: List<String>,
@@ -30,7 +27,6 @@ sealed interface SettingField2<T> {
     data class ActionField(
         override val key: FieldKey,
         override val value: Boolean?,
-        override val id: String,
         override val hint: String,
         override val tags: List<String>,
         override val title: String,
@@ -38,7 +34,6 @@ sealed interface SettingField2<T> {
 
     data class BooleanField(
         override val key: FieldKey,
-        override val id: String,
         override val value: Boolean,
         override val hint: String,
         override val tags: List<String>,
@@ -47,7 +42,6 @@ sealed interface SettingField2<T> {
 
     data class IntInputField(
         override val key: FieldKey,
-        override val id: String,
         override val value: String,
         override val hint: String,
         override val tags: List<String>,
@@ -59,7 +53,6 @@ sealed interface SettingField2<T> {
 
     data class DiscreteField(
         override val key: FieldKey,
-        override val id: String,
         override val value: Int,
         override val hint: String,
         override val tags: List<String>,
@@ -69,7 +62,6 @@ sealed interface SettingField2<T> {
 
     data class MultipleField(
         override val key: FieldKey,
-        override val id: String,
         override val value: String,
         override val hint: String,
         override val tags: List<String>,
@@ -79,7 +71,6 @@ sealed interface SettingField2<T> {
 
     data class Mode(
         override val key: FieldKey,
-        override val id: String,
         override val value: String,
         override val hint: String,
         override val tags: List<String>,

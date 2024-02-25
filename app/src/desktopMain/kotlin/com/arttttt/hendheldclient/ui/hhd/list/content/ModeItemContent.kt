@@ -81,8 +81,8 @@ fun ModeItemContent(
                             .fillMaxWidth()
                             .wrapContentHeight(),
                         item = child,
-                        onValueChanged = { _, _, _ -> },
-                        onResetClicked = { _, _ -> },
+                        onValueChanged = { _, _ -> },
+                        onResetClicked = { _ -> },
                     )
                 }
             }

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
 import com.arttttt.hendheldclient.ui.hhd.list.model.ActionListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.BooleanListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.ContainerListItem
@@ -26,8 +27,8 @@ import com.arttttt.hendheldclient.ui.hhd.list.model.TextListItem
 fun ContainerItemContent(
     modifier: Modifier,
     item: ContainerListItem,
-    onValueChanged: (String, String, Any) -> Unit,
-    onResetClicked: (String, String) -> Unit
+    onValueChanged: (FieldKey, Any) -> Unit,
+    onResetClicked: (FieldKey) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -53,7 +54,6 @@ fun ContainerItemContent(
                         item = child,
                         onValueChanged = { value ->
                             onValueChanged.invoke(
-                                item.id,
                                 child.id,
                                 value,
                             )
@@ -65,14 +65,12 @@ fun ContainerItemContent(
                         item = child,
                         onValueChanged = { value ->
                             onValueChanged.invoke(
-                                item.id,
                                 child.id,
                                 value,
                             )
                         },
                         onResetClicked = {
                             onResetClicked.invoke(
-                                item.id,
                                 child.id,
                             )
                         },

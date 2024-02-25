@@ -13,7 +13,6 @@ import com.arttttt.hendheldclient.ui.hhd.list.model.ModeListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.MultipleListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.TextListItem
 import com.arttttt.hendheldclient.utils.ListItem
-import com.arttttt.hendheldclient.utils.mapValuesNutNull
 
 class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
@@ -40,7 +39,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
     private fun SettingField2.SectionField.toListItem(): ListItem {
         return ContainerListItem(
-            id = this.id,
+            id = this.key,
             title = this.title,
             children = this.value.mapNotNull { (_, field) -> field.toListItem() }
         )
@@ -62,7 +61,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
     private fun SettingField2.BooleanField.toListItem(): ListItem {
         return BooleanListItem(
-            id = this.id,
+            id = this.key,
             title = this.title,
             isChecked = false,
         )
@@ -70,7 +69,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
     private fun SettingField2.IntInputField.toListItem(): ListItem {
         return IntListItem(
-            id = this.id,
+            id = this.key,
             title = this.title,
             value = "50",
             error = null,
@@ -80,7 +79,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
     private fun SettingField2.DiscreteField.toListItem(): ListItem {
         return DiscreteListItem(
-            id = this.id,
+            id = this.key,
             title = this.title,
             value = this.value,
             values = this.values,
@@ -89,7 +88,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
     private fun SettingField2.MultipleField.toListItem(): ListItem {
         return MultipleListItem(
-            id = this.id,
+            id = this.key,
             title = this.title,
             value = this.value,
             values = this.values,
@@ -98,7 +97,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
     private fun SettingField2.Mode.toListItem(): ListItem {
         return ModeListItem(
-            id = this.id,
+            id = this.key,
             title = this.title,
             children = listOf(
                 this.mode.toListItem()
@@ -147,7 +146,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         return if (isValueOverwritten(pendingChanges, parent, this)) {
             pendingChanges
                 .getValue(parent)
-                .getValue(id)
+                .getValue(key.key)
                 .let(overwrittenMapper)
         } else {
             value
@@ -160,7 +159,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         parent: String,
         field: SettingField2<*>,
     ): Boolean {
-        return pendingChanges.get(parent)?.containsKey(field.id) == true
+        return pendingChanges.get(parent)?.containsKey(field.key.key) == true
     }
 
     private fun SettingField2.IntInputField.getError(

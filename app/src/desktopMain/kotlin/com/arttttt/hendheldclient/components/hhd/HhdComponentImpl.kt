@@ -4,6 +4,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.arttttt.hendheldclient.arch.context.AppComponentContext
 import com.arttttt.hendheldclient.arch.koinScope
 import com.arttttt.hendheldclient.components.hhd.di.hhdComponentModule
+import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
 import com.arttttt.hendheldclient.domain.store.hhd.HhdStore
 import com.arttttt.hendheldclient.ui.hhd.HhdTransformer
 import kotlinx.coroutines.flow.SharingStarted
@@ -35,7 +36,13 @@ class HhdComponentImpl(
             )
         )
 
-    override fun onValueUpdated(parent: String, id: String, value: Any) {
+    override fun onValueUpdated(key: FieldKey, value: Any) {
+    }
+
+    override fun onResetClicked(key: FieldKey) {
+    }
+
+    /*    override fun onValueUpdated(parent: String, id: String, value: Any) {
         hhdStore.accept(
             HhdStore.Intent.SetValue(
                 parent = parent,
@@ -52,5 +59,5 @@ class HhdComponentImpl(
                 id = id,
             )
         )
-    }
+    }*/
 }
