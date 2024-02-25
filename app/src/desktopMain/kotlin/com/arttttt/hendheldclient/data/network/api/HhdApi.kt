@@ -1,13 +1,10 @@
 package com.arttttt.hendheldclient.data.network.api
 
-import com.arttttt.hendheldclient.data.network.model.settings.HhdFieldApiResponse2
-import com.arttttt.hendheldclient.data.network.model.settings.HhdSettingsApiResponse
 import com.arttttt.hendheldclient.data.network.model.settings.HhdSettingsApiResponse2
 import com.arttttt.hendheldclient.data.network.model.state.HhdStateApiResponse
 import com.arttttt.hendheldclient.domain.entity.HhdAuthToken
 import com.arttttt.hendheldclient.domain.entity.HhdPort
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -17,7 +14,6 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
