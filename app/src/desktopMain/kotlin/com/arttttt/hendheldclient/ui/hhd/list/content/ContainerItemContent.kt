@@ -28,7 +28,7 @@ fun ContainerItemContent(
     modifier: Modifier,
     item: ContainerListItem,
     onValueChanged: (FieldKey, Any) -> Unit,
-    onResetClicked: (FieldKey) -> Unit
+    onResetClicked: (FieldKey) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -92,6 +92,8 @@ fun ContainerItemContent(
                             .fillMaxWidth()
                             .wrapContentHeight(),
                         item = child,
+                        onResetClicked = onResetClicked,
+                        onValueChanged = onValueChanged,
                     )
                 }
             }

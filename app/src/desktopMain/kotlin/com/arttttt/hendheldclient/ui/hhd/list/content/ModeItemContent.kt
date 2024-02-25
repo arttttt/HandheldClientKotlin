@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
 import com.arttttt.hendheldclient.ui.hhd.list.model.ActionListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.BooleanListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.ContainerListItem
@@ -26,6 +27,8 @@ import com.arttttt.hendheldclient.ui.hhd.list.model.TextListItem
 fun ModeItemContent(
     modifier: Modifier,
     item: ModeListItem,
+    onValueChanged: (FieldKey, Any) -> Unit,
+    onResetClicked: (FieldKey) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -50,7 +53,10 @@ fun ModeItemContent(
                     BooleanItemContent(
                         item = child,
                         onValueChanged = { value ->
-
+                            onValueChanged.invoke(
+                                child.id,
+                                value,
+                            )
                         }
                     )
                 }
@@ -58,10 +64,13 @@ fun ModeItemContent(
                     IntInputItemContent(
                         item = child,
                         onValueChanged = { value ->
-
+                            onValueChanged.invoke(
+                                child.id,
+                                value,
+                            )
                         },
                         onResetClicked = {
-
+                            onResetClicked.invoke(child.id)
                         },
                     )
                 }
@@ -81,8 +90,8 @@ fun ModeItemContent(
                             .fillMaxWidth()
                             .wrapContentHeight(),
                         item = child,
-                        onValueChanged = { _, _ -> },
-                        onResetClicked = { _ -> },
+                        onValueChanged = onValueChanged,
+                        onResetClicked = onResetClicked,
                     )
                 }
             }
