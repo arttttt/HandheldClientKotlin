@@ -2,14 +2,10 @@ package com.arttttt.hendheldclient.domain.store.hhd
 
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
-import com.arttttt.hendheldclient.domain.entity.settings.SettingField2
-import com.arttttt.hendheldclient.domain.entity.settings.SettingFieldRoot
 import com.arttttt.hendheldclient.domain.repository.HhdRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.LinkedList
-import java.util.Queue
 
 /**
  * todo: provide dispatchers provider
@@ -92,76 +88,5 @@ class HhdStoreExecutor(
 
             dispatch(HhdStore.Message.ProgressFinished)
         }
-    }
-
-    private fun findSettingField(
-        fields: Map<String, SettingFieldRoot>,
-        keys: Queue<String>,
-    ): SettingField2<*>? {
-        val key = keys.poll()
-        val field: SettingFieldRoot = fields[key] ?: return null
-
-        return findSettingField2(
-            sections = field.items,
-            keys = keys,
-        )
-    }
-
-    private fun findSettingField2(
-        sections: Map<String, SettingField2<*>>,
-        keys: Queue<String>,
-    ): SettingField2<*>? {
-        var currentField: SettingField2<*>? = null
-        var key = keys.poll()
-
-        while (key != null) {
-            currentField = sections[key] ?: break
-
-            when (currentField) {
-                is SettingField2.SectionField -> {
-                    currentField = findSettingField2(
-                        sections = currentField.value,
-                        keys = keys,
-                    )
-                }
-                is SettingField2.Mode -> {
-                    currentField = when (val mode = currentField.mode) {
-                        is SettingField2.SectionField -> {
-                            /**
-                             * hack
-                             *
-                             * todo: fix it later
-                             */
-                            keys.poll()
-
-                            findSettingField2(
-                                sections = mode.value,
-                                keys = keys,
-                            )
-                        }
-                        else -> mode
-                    }
-                }
-                else -> {}
-            }
-
-            key = keys.poll()
-        }
-
-        return currentField
-    }
-
-    private fun FieldKey.toQueue(): Queue<String> {
-        return LinkedList(
-            buildList<String?> {
-                var currentKey: FieldKey? = this@toQueue
-
-                while (currentKey != null) {
-                    this += currentKey.key
-
-                    currentKey = currentKey.parent
-                }
-            }.reversed()
-        )
     }
 }

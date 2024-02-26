@@ -3,7 +3,7 @@ package com.arttttt.hendheldclient.ui.hhd
 import com.arttttt.hendheldclient.arch.Transformer
 import com.arttttt.hendheldclient.components.hhd.HhdComponent
 import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
-import com.arttttt.hendheldclient.domain.entity.settings.SettingField2
+import com.arttttt.hendheldclient.domain.entity.settings.SettingField3
 import com.arttttt.hendheldclient.domain.store.hhd.HhdStore
 import com.arttttt.hendheldclient.ui.hhd.list.model.ActionListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.BooleanListItem
@@ -21,67 +21,84 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         return HhdComponent.UiState(
             items = state
                 .fields
-                .mapNotNull { (_, fieldRoot) ->
-                    fieldRoot.items.mapNotNull { (_, field) ->
-                        field.toListItem(state)
-                    }
+                .mapNotNull { (_, field) ->
+                    field.toListItem(state)
                 }
                 .flatten()
         )
     }
 
-    private fun SettingField2<*>.toListItem(
+    private fun SettingField3.toListItem(
+        state: HhdStore.State
+    ): List<ListItem> {
+        return when (val section = this) {
+            is SettingField3.RootField -> section
+                .items
+                .map { (_, field) -> field.toListItem(state) }
+                .flatten()
+            is SettingField3.Fields<*> -> listOf(
+                section.toListItem(
+                    state = state,
+                )
+            )
+        }
+    }
+
+    private fun SettingField3.Fields<*>.toListItem(
         state: HhdStore.State,
     ): ListItem {
         return when (val section = this) {
-            is SettingField2.SectionField -> section.toListItem(
+            is SettingField3.Fields.SectionField -> section.toListItem(
                 state = state,
             )
-            is SettingField2.DisplayField -> section.toListItem()
-            is SettingField2.ActionField -> section.toListItem()
-            is SettingField2.BooleanField -> section.toListItem(
+            is SettingField3.Fields.DisplayField -> section.toListItem()
+            is SettingField3.Fields.ActionField -> section.toListItem()
+            is SettingField3.Fields.BooleanField -> section.toListItem(
                 state = state,
             )
-            is SettingField2.IntInputField -> section.toListItem(
+            is SettingField3.Fields.IntInputField -> section.toListItem(
                 state = state,
             )
-            is SettingField2.DiscreteField -> section.toListItem(
+            is SettingField3.Fields.DiscreteField -> section.toListItem(
                 state = state
             )
-            is SettingField2.MultipleField -> section.toListItem(
+            is SettingField3.Fields.MultipleField -> section.toListItem(
                 state = state,
             )
-            is SettingField2.Mode -> section.toListItem(
+            is SettingField3.Fields.Mode -> section.toListItem(
                 state = state,
             )
         }
     }
 
-    private fun SettingField2.SectionField.toListItem(
+    private fun SettingField3.Fields.SectionField.toListItem(
         state: HhdStore.State,
     ): ListItem {
         return ContainerListItem(
             id = this.key,
             title = this.title,
-            children = this.value.mapNotNull { (_, field) -> field.toListItem(state) }
+            children = this
+                .value
+                .mapNotNull { (_, field) -> field.toListItem(state) }
+                .flatten()
         )
     }
 
-    private fun SettingField2.DisplayField.toListItem(): ListItem {
+    private fun SettingField3.Fields.DisplayField.toListItem(): ListItem {
         return TextListItem(
             title = this.title,
             value = this.value,
         )
     }
 
-    private fun SettingField2.ActionField.toListItem(): ListItem {
+    private fun SettingField3.Fields.ActionField.toListItem(): ListItem {
         return ActionListItem(
             title = this.title,
             isEnabled = this.value == true,
         )
     }
 
-    private fun SettingField2.BooleanField.toListItem(
+    private fun SettingField3.Fields.BooleanField.toListItem(
         state: HhdStore.State,
     ): ListItem {
         return BooleanListItem(
@@ -93,7 +110,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         )
     }
 
-    private fun SettingField2.IntInputField.toListItem(
+    private fun SettingField3.Fields.IntInputField.toListItem(
         state: HhdStore.State,
     ): ListItem {
         return IntListItem(
@@ -113,7 +130,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         )
     }
 
-    private fun SettingField2.DiscreteField.toListItem(
+    private fun SettingField3.Fields.DiscreteField.toListItem(
         state: HhdStore.State,
     ): ListItem {
         return DiscreteListItem(
@@ -126,7 +143,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         )
     }
 
-    private fun SettingField2.MultipleField.toListItem(
+    private fun SettingField3.Fields.MultipleField.toListItem(
         state: HhdStore.State,
     ): ListItem {
         return MultipleListItem(
@@ -139,29 +156,27 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         )
     }
 
-    private fun SettingField2.Mode.toListItem(
+    private fun SettingField3.Fields.Mode.toListItem(
         state: HhdStore.State,
     ): ListItem {
         return ModeListItem(
             id = this.key,
             title = this.title,
-            children = listOf(
-                this.mode.toListItem(state)
-            )
+            children = this.mode.toListItem(state)
         )
     }
 
-    private fun <T> SettingField2<T>.getCorrectValue(
+    private fun <T> SettingField3.Fields<T>.getCorrectValue(
         pendingChanges: Map<FieldKey, Any>,
     ): T {
         val mapperValue: (Any?) -> Any? = when (this) {
-            is SettingField2.BooleanField -> {
+            is SettingField3.Fields.BooleanField -> {
                 val result: (Any?) -> Boolean = { it as Boolean }
 
                 result
             }
 
-            is SettingField2.IntInputField -> {
+            is SettingField3.Fields.IntInputField -> {
                 val result: (Any?) -> String = {
                     (it as? String) ?: ""
                 }
@@ -182,7 +197,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         )
     }
 
-    private fun <T> SettingField2<T>.getCorrectValue(
+    private fun <T> SettingField3.Fields<T>.getCorrectValue(
         pendingChanges: Map<FieldKey, Any>,
         overwrittenMapper: (Any?) -> T,
     ): T {
@@ -195,13 +210,13 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
         }
     }
 
-    private fun SettingField2<*>.isValueOverwritten(
+    private fun SettingField3.Fields<*>.isValueOverwritten(
         pendingChanges: Map<FieldKey, Any>,
     ): Boolean {
         return pendingChanges.containsKey(this.key)
     }
 
-    private fun SettingField2.IntInputField.getError(
+    private fun SettingField3.Fields.IntInputField.getError(
         pendingChanges: Map<FieldKey, Any>,
     ): String? {
         val currentValue = getCorrectValue(
