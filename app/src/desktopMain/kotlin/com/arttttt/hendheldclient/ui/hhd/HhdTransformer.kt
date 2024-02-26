@@ -10,10 +10,13 @@ import com.arttttt.hendheldclient.ui.hhd.list.model.BooleanListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.ContainerListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.DiscreteListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.IntListItem
+import com.arttttt.hendheldclient.ui.hhd.list.model.ModeContainerListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.ModeListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.MultipleListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.TextListItem
 import com.arttttt.hendheldclient.utils.ListItem
+import com.arttttt.hendheldclient.utils.mapKeysNutNull
+import com.arttttt.hendheldclient.utils.mapValuesNutNull
 
 class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
@@ -25,12 +28,13 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
                     field.toListItem(state)
                 }
                 .flatten()
+                .filterNotNull()
         )
     }
 
     private fun SettingField3.toListItem(
         state: HhdStore.State
-    ): List<ListItem> {
+    ): List<ListItem?> {
         return when (val section = this) {
             is SettingField3.RootField -> section
                 .items
@@ -46,7 +50,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
     private fun SettingField3.Fields<*>.toListItem(
         state: HhdStore.State,
-    ): ListItem {
+    ): ListItem? {
         return when (val section = this) {
             is SettingField3.Fields.SectionField -> section.toListItem(
                 state = state,
@@ -81,6 +85,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
                 .value
                 .mapNotNull { (_, field) -> field.toListItem(state) }
                 .flatten()
+                .filterNotNull()
         )
     }
 
@@ -158,11 +163,35 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
     private fun SettingField3.Fields.Mode.toListItem(
         state: HhdStore.State,
-    ): ListItem {
+    ): ListItem? {
+        val mode = modes.getValue(
+            getCorrectValue(
+                pendingChanges = state.pendingChanges2
+            )
+        ) as? SettingField3.Fields.SectionField ?: return null
+
         return ModeListItem(
             id = this.key,
             title = this.title,
-            children = this.mode.toListItem(state)
+            modes = modes
+                .mapKeysNutNull { (_, value) ->
+                    when (value) {
+                        is SettingField3.Fields<*> -> value.key
+                        else -> null
+                    }
+                }
+                .mapValuesNutNull { (_, value) ->
+                    value.let { it as? SettingField3.Fields.SectionField }?.title
+                },
+            mode = ModeContainerListItem(
+                id = mode.key,
+                title = mode.title,
+                children = mode
+                    .value
+                    .map { (_, field) -> field.toListItem(state) }
+                    .flatten()
+                    .filterNotNull(),
+            ),
         )
     }
 

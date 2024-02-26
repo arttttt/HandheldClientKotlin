@@ -1,5 +1,6 @@
 package com.arttttt.hendheldclient.ui.hhd
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,10 +10,12 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arttttt.hendheldclient.components.hhd.HhdComponent
 import com.arttttt.hendheldclient.ui.hhd.list.content.ContainerItemContent
@@ -41,7 +44,12 @@ fun HhdContent(component: HhdComponent) {
                 is ContainerListItem -> ContainerItemContent(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
+                        .wrapContentHeight()
+                        .border(
+                            width = 1.dp,
+                            color = Color.Red,
+                            shape = RoundedCornerShape(8.dp)
+                        ),
                     item = item,
                     onValueChanged = component::onValueUpdated,
                     onResetClicked = component::onResetClicked,
