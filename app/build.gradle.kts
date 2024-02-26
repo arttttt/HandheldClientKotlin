@@ -52,6 +52,7 @@ kotlin {
 
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.slf4j.simple)
         }
     }
 }
