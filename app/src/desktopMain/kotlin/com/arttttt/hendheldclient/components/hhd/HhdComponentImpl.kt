@@ -7,8 +7,10 @@ import com.arttttt.hendheldclient.components.hhd.di.hhdComponentModule
 import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
 import com.arttttt.hendheldclient.domain.store.hhd.HhdStore
 import com.arttttt.hendheldclient.ui.hhd.HhdTransformer
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
@@ -28,6 +30,7 @@ class HhdComponentImpl(
     override val states: StateFlow<HhdComponent.UiState> = hhdStore
         .states
         .map(transformer::invoke)
+        .flowOn(Dispatchers.IO)
         .stateIn(
             coroutineScope,
             SharingStarted.WhileSubscribed(5000),
