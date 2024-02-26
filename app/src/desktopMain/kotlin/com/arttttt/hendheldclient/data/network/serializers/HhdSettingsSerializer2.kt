@@ -26,8 +26,7 @@ object HhdSettingsSerializer2 : KSerializer<HhdSettingsApiResponse2> {
         ignoreUnknownKeys = true
     }
 
-    override val descriptor: SerialDescriptor = buildClassSerialDescriptor("HhdSettingsApiResponse2") {
-    }
+    override val descriptor: SerialDescriptor = buildClassSerialDescriptor("HhdSettingsApiResponse2") {}
 
     override fun deserialize(decoder: Decoder): HhdSettingsApiResponse2 {
         val decoder = decoder as? JsonDecoder ?: throw IllegalArgumentException(INCORRECT_DECODER_MESSAGE)

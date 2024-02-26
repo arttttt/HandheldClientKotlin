@@ -9,8 +9,10 @@ import com.arttttt.hendheldclient.domain.entity.settings.SettingField3
 import com.arttttt.hendheldclient.domain.repository.HhdRepository
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.int
+import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 class HhdRepositoryImpl(
@@ -41,12 +43,15 @@ class HhdRepositoryImpl(
                     key = key,
                 )
 
+                val states = state.states.jsonObject.getValue(key)
+
                 put(
                     key = key,
-                    SettingField3.RootField(
+                    value = SettingField3.RootField(
                         key = rootKey,
                         items = parseRootData(
                             rootKey = rootKey,
+                            states = states,
                             children = value,
                         ),
                     )
@@ -55,13 +60,17 @@ class HhdRepositoryImpl(
         }
     }
 
+    @Suppress("NAME_SHADOWING")
     private fun parseRootData(
         rootKey: FieldKey,
+        states: JsonElement?,
         children: Map<String, HhdFieldApiResponse2>,
     ): Map<String, SettingField3> {
         return buildMap {
             for ((key, value) in children) {
                 if (value !is HhdFieldApiResponse2.Container) continue
+
+                val states = states?.jsonObject?.get(key)
 
                 put(
                     key = key,
@@ -70,6 +79,7 @@ class HhdRepositoryImpl(
                             parent = rootKey,
                             key = key,
                         ),
+                        states = states,
                         container = value,
                     )
                 )
@@ -79,6 +89,7 @@ class HhdRepositoryImpl(
 
     private fun parseContainer(
         key: FieldKey,
+        states: JsonElement?,
         container: HhdFieldApiResponse2.Container,
     ): SettingField3 {
         return SettingField3.Fields.SectionField(
@@ -88,7 +99,7 @@ class HhdRepositoryImpl(
             hint = container.hint,
             value = createFields(
                 rootKey = key,
-                fields = emptyMap(),
+                fields = states?.jsonObject,
                 children = container.children,
             ),
         )
@@ -96,12 +107,12 @@ class HhdRepositoryImpl(
 
     private fun createFields(
         rootKey: FieldKey,
-        fields: Map<String, JsonElement>,
+        fields: JsonObject?,
         children: Map<String, HhdFieldApiResponse2>,
     ): Map<String, SettingField3> {
         return buildMap {
             for ((key, value) in children) {
-                val field = fields[key]
+                val field = fields?.get(key)
 
                 val fieldKey = FieldKey(
                     parent = rootKey,
@@ -142,6 +153,7 @@ class HhdRepositoryImpl(
                     )
                     is HhdFieldApiResponse2.Container -> parseContainer(
                         key = fieldKey,
+                        states = field?.jsonObject,
                         container = value,
                     )
                     is HhdFieldApiResponse2.Discrete -> SettingField3.Fields.DiscreteField(
@@ -162,13 +174,13 @@ class HhdRepositoryImpl(
                     )
                     is HhdFieldApiResponse2.Mode -> SettingField3.Fields.Mode(
                         key = fieldKey,
-                        value = field?.jsonPrimitive?.content ?: value.default.jsonPrimitive.content,
+                        value = field?.jsonObject?.get("mode")?.nullableContent ?: value.default.jsonPrimitive.content,
                         hint = value.hint,
                         tags = value.tags,
                         title = value.title,
                         modes = createFields(
                             rootKey = fieldKey,
-                            fields = emptyMap(),
+                            fields = field?.jsonObject,
                             children = value.modes,
                         ),
                     )

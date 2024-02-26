@@ -1,10 +1,10 @@
 package com.arttttt.hendheldclient.data.network.model.state
 
-import kotlinx.serialization.SerialName
+import com.arttttt.hendheldclient.data.network.serializers.HhdStateSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
-@Serializable
+@Serializable(with = HhdStateSerializer::class)
 data class HhdStateApiResponse(
-    @SerialName("hhd") val hhd: Map<String, Map<String, JsonElement>>
+    val states: JsonElement
 )
