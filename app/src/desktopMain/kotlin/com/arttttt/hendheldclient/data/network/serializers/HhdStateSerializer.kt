@@ -19,7 +19,7 @@ object HhdStateSerializer : KSerializer<HhdStateApiResponse> {
         val decoder = decoder as? JsonDecoder ?: throw IllegalArgumentException(INCORRECT_DECODER_MESSAGE)
 
         return HhdStateApiResponse(
-            states = decoder.decodeJsonElement()
+            state = decoder.decodeJsonElement()
         )
     }
 

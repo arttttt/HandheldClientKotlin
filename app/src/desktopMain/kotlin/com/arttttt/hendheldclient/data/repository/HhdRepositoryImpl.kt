@@ -4,6 +4,7 @@ import com.arttttt.hendheldclient.data.network.api.HhdApi
 import com.arttttt.hendheldclient.data.network.model.settings.HhdFieldApiResponse2
 import com.arttttt.hendheldclient.data.network.model.settings.HhdSettingsApiResponse2
 import com.arttttt.hendheldclient.data.network.model.state.HhdStateApiResponse
+import com.arttttt.hendheldclient.data.network.model.state.HhdStateRequestBody
 import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
 import com.arttttt.hendheldclient.domain.entity.settings.SettingField3
 import com.arttttt.hendheldclient.domain.repository.HhdRepository
@@ -15,6 +16,9 @@ import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
+/**
+ * todo: move out parsing
+ */
 class HhdRepositoryImpl(
     private val api: HhdApi,
 ) : HhdRepository {
@@ -32,6 +36,16 @@ class HhdRepositoryImpl(
         return result
     }
 
+    override suspend fun applyOverrides(overrides: Map<FieldKey, Any>) {
+        api.setState(
+            body = HhdStateRequestBody(
+                state = overrides.mapKeys { (key, _) ->
+                    key.toPathString()
+                }
+            )
+        )
+    }
+
     private fun mapToEntity(
         settings: HhdSettingsApiResponse2,
         state: HhdStateApiResponse,
@@ -43,7 +57,7 @@ class HhdRepositoryImpl(
                     key = key,
                 )
 
-                val states = state.states.jsonObject.getValue(key)
+                val states = state.state.jsonObject.getValue(key)
 
                 put(
                     key = key,
@@ -203,4 +217,18 @@ class HhdRepositoryImpl(
         get() {
             return this.takeIf { it != JsonNull }?.jsonPrimitive?.content
         }
+
+    private fun FieldKey.toPathString(): String {
+        return buildString {
+            appendKeyPath(this@toPathString)
+        }
+    }
+
+    private fun StringBuilder.appendKeyPath(fieldKey: FieldKey) {
+        fieldKey.parent?.let {
+            appendKeyPath(it)
+            append('.')
+        }
+        append(fieldKey.key)
+    }
 }

@@ -40,7 +40,15 @@ class HhdStoreExecutor(
         }
     }
 
-    private fun applyOverrides() {}
+    private fun applyOverrides() {
+        scope.launch {
+            withContext(Dispatchers.IO) {
+                hhdRepository.applyOverrides(
+                    overrides = state().pendingChanges2,
+                )
+            }
+        }
+    }
     private fun clearOverrides() {
         dispatch(
             HhdStore.Message.PendingChangesUpdated2(

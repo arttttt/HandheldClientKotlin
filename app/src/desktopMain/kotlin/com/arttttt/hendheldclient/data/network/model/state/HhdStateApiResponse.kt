@@ -6,5 +6,5 @@ import kotlinx.serialization.json.JsonElement
 
 @Serializable(with = HhdStateSerializer::class)
 data class HhdStateApiResponse(
-    val states: JsonElement
+    val state: JsonElement
 )
