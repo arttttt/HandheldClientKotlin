@@ -57,7 +57,11 @@ class HhdComponentImpl(
         )
     }
 
-    override fun onApplyClicked() {}
+    override fun onApplyClicked() {
+        hhdStore.accept(HhdStore.Intent.ApplyOverrides)
+    }
 
-    override fun onResetAllClicked() {}
+    override fun onResetAllClicked() {
+        hhdStore.accept(HhdStore.Intent.ClearOverrides)
+    }
 }

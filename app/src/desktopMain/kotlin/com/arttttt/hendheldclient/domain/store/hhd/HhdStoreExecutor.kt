@@ -35,7 +35,18 @@ class HhdStoreExecutor(
                     key = intent.key,
                 )
             }
+            is HhdStore.Intent.ApplyOverrides -> applyOverrides()
+            is HhdStore.Intent.ClearOverrides -> clearOverrides()
         }
+    }
+
+    private fun applyOverrides() {}
+    private fun clearOverrides() {
+        dispatch(
+            HhdStore.Message.PendingChangesUpdated2(
+                pendingChanges = emptyMap(),
+            )
+        )
     }
 
     private fun setValue2(

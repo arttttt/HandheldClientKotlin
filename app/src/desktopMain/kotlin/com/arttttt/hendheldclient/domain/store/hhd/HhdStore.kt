@@ -27,6 +27,10 @@ interface HhdStore : Store<HhdStore.Intent, HhdStore.State, HhdStore.Label> {
          data class RemoveOverride2(
              val key: FieldKey,
          ) : Intent()
+
+         data object ClearOverrides : Intent()
+
+         data object ApplyOverrides : Intent()
      }
  
      sealed class Message {
