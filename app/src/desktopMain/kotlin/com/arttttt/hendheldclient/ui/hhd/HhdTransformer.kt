@@ -28,7 +28,8 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
                     field.toListItem(state)
                 }
                 .flatten()
-                .filterNotNull()
+                .filterNotNull(),
+            areActionsVisible = state.pendingChanges2.isNotEmpty(),
         )
     }
 

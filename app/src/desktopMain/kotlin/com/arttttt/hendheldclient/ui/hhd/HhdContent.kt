@@ -67,36 +67,53 @@ fun HhdContent(component: HhdComponent) {
             }
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 8.dp
-                )
-                .clip(
-                    RoundedCornerShape(
-                        topStart = 16.dp,
-                        topEnd = 16.dp,
-                    )
-                )
-                .background(Color.Red)
-                .align(Alignment.BottomCenter)
-                .padding(
-                    vertical = 8.dp
-                ),
-            horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
-        ) {
-            Button(
-                onClick = {}
-            ) {
-                Text("apply")
-            }
+        /**
+         * todo: animated appearance
+         */
+        if (state.areActionsVisible) {
+            ActionsRow(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                onApplyClicked = component::onApplyClicked,
+                onResetClicked = component::onResetAllClicked,
+            )
+        }
+    }
+}
 
-            Button(
-                onClick = {}
-            ) {
-                Text("reset")
-            }
+@Composable
+private fun ActionsRow(
+    modifier: Modifier,
+    onApplyClicked: () -> Unit,
+    onResetClicked: () -> Unit,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 8.dp
+            )
+            .clip(
+                RoundedCornerShape(
+                    topStart = 16.dp,
+                    topEnd = 16.dp,
+                )
+            )
+            .background(Color.Gray)
+            .padding(
+                vertical = 8.dp
+            ),
+        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
+    ) {
+        Button(
+            onClick = onApplyClicked
+        ) {
+            Text("apply")
+        }
+
+        Button(
+            onClick = onResetClicked
+        ) {
+            Text("reset")
         }
     }
 }

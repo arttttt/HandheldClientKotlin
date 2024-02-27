@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 interface HhdComponent : DecomposeComponent {
 
     data class UiState(
-        val items: List<ListItem>
+        val items: List<ListItem>,
+        val areActionsVisible: Boolean,
     )
 
     val states: StateFlow<UiState>
@@ -21,4 +22,8 @@ interface HhdComponent : DecomposeComponent {
     fun onResetClicked(
         key: FieldKey
     )
+
+    fun onApplyClicked()
+
+    fun onResetAllClicked()
 }

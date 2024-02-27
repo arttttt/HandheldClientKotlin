@@ -36,6 +36,7 @@ class HhdComponentImpl(
             SharingStarted.WhileSubscribed(5000),
             HhdComponent.UiState(
                 items = emptyList(),
+                areActionsVisible = false,
             )
         )
 
@@ -55,4 +56,8 @@ class HhdComponentImpl(
             )
         )
     }
+
+    override fun onApplyClicked() {}
+
+    override fun onResetAllClicked() {}
 }
