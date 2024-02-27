@@ -41,7 +41,11 @@ fun HhdContent(component: HhdComponent) {
                 start = 8.dp,
                 top = 8.dp,
                 end = 8.dp,
-                bottom = 72.dp
+                bottom = if (state.areActionsVisible) {
+                    72.dp
+                } else {
+                    8.dp
+                },
             ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
