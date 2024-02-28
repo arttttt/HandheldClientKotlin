@@ -9,7 +9,7 @@ interface HhdStore : Store<HhdStore.Intent, HhdStore.State, HhdStore.Label> {
      data class State(
          val isInProgress: Boolean,
          val fields: Map<String, SettingField3>,
-         val pendingChanges2: Map<FieldKey, Any>,
+         val pendingChanges2: Map<FieldKey, Any?>,
      )
  
      sealed class Action {
@@ -43,7 +43,7 @@ interface HhdStore : Store<HhdStore.Intent, HhdStore.State, HhdStore.Label> {
          ) : Message()
 
          data class PendingChangesUpdated2(
-             val pendingChanges: Map<FieldKey, Any>,
+             val pendingChanges: Map<FieldKey, Any?>,
          ) : Message()
      }
  

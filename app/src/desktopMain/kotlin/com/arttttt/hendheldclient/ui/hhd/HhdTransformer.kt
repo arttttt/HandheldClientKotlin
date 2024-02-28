@@ -197,7 +197,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
     }
 
     private fun <T> SettingField3.Fields<T>.getCorrectValue(
-        pendingChanges: Map<FieldKey, Any>,
+        pendingChanges: Map<FieldKey, Any?>,
     ): T {
         val mapperValue: (Any?) -> Any? = when (this) {
             is SettingField3.Fields.BooleanField -> {
@@ -208,7 +208,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
 
             is SettingField3.Fields.IntInputField -> {
                 val result: (Any?) -> String = {
-                    (it as? String) ?: ""
+                    it?.toString() ?: ""
                 }
 
                 result
@@ -228,7 +228,7 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
     }
 
     private fun <T> SettingField3.Fields<T>.getCorrectValue(
-        pendingChanges: Map<FieldKey, Any>,
+        pendingChanges: Map<FieldKey, Any?>,
         overwrittenMapper: (Any?) -> T,
     ): T {
         return if (this.isValueOverwritten(pendingChanges)) {
@@ -241,13 +241,13 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
     }
 
     private fun SettingField3.Fields<*>.isValueOverwritten(
-        pendingChanges: Map<FieldKey, Any>,
+        pendingChanges: Map<FieldKey, Any?>,
     ): Boolean {
         return pendingChanges.containsKey(this.key)
     }
 
     private fun SettingField3.Fields.IntInputField.getError(
-        pendingChanges: Map<FieldKey, Any>,
+        pendingChanges: Map<FieldKey, Any?>,
     ): String? {
         val currentValue = getCorrectValue(
             pendingChanges = pendingChanges,

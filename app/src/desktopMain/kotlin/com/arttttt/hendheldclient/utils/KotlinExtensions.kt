@@ -27,3 +27,13 @@ fun <K, V, R : Any> Map<K, V>.mapValuesNutNull(
         }
     }
 }
+
+fun <K, V : Any> Map<K, V?>.filterValuesNotNull(): Map<K, V> {
+    return buildMap {
+        this@filterValuesNotNull.forEach { (key, value) ->
+            if (value != null) {
+                put(key, value)
+            }
+        }
+    }
+}
