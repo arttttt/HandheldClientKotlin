@@ -130,9 +130,10 @@ class HhdTransformer : Transformer<HhdStore.State, HhdComponent.UiState> {
             error = this.getError(
                 pendingChanges = state.pendingChanges2,
             ),
-            isValueOverwritten = this.isValueOverwritten(
+            isValueOverwritten = false,
+            /*isValueOverwritten = this.isValueOverwritten(
                 pendingChanges = state.pendingChanges2,
-            )
+            )*/
         )
     }
 

@@ -8,6 +8,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
 import com.arttttt.hendheldclient.ui.hhd.list.model.IntListItem
 
@@ -17,9 +21,21 @@ fun IntInputItemContent(
     onValueChanged: (Any) -> Unit,
     onResetClicked: () -> Unit,
 ) {
+    var text by remember {
+        mutableStateOf(item.value)
+    }
+
     OutlinedTextField(
-        value = item.value,
-        onValueChange = onValueChanged,
+        value = text,
+        onValueChange = { updatedText ->
+            val filteredText = updatedText.filter { it.isDigit() }
+
+            if (!filteredText.contentEquals(text)) {
+                onValueChanged.invoke(text)
+            }
+
+            text = filteredText
+        },
         label = {
             Text(
                 text = item.title
