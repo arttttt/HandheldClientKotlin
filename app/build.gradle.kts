@@ -53,6 +53,9 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.slf4j.simple)
+
+            implementation("net.java.jinput:jinput:2.0.10")
+            implementation("net.java.jinput:jinput:2.0.10:natives-all")
         }
     }
 }
@@ -68,4 +71,15 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+tasks.register<Copy>("copyNativeLibs") {
+    from("libs")
+    into("build/libs")
+}
+
+tasks.getByName("build").dependsOn("copyNativeLibs")
+
+tasks.withType<JavaExec> {
+    systemProperty("java.library.path", "/home/artyom/PROJECTS/IdeaProjects/HandheldClient/app/libs/")
 }
