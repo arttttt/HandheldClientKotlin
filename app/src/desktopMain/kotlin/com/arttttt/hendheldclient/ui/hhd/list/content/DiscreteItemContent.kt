@@ -12,6 +12,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import com.arttttt.hendheldclient.ui.hhd.list.model.DiscreteListItem
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -25,7 +30,23 @@ fun DiscreteItemContent(
     }
 
     ExposedDropdownMenuBox(
-        modifier = Modifier,
+        modifier = Modifier.onKeyEvent { event ->
+            when {
+                event.key == Key.Enter && event.type == KeyEventType.KeyDown -> true
+                event.key == Key.Enter && event.type == KeyEventType.KeyUp -> {
+                    isExpanded = true
+
+                    true
+                }
+                event.key == Key.Escape && event.type == KeyEventType.KeyDown -> true
+                event.key == Key.Escape && event.type == KeyEventType.KeyUp -> {
+                    isExpanded = false
+
+                    true
+                }
+                else -> false
+            }
+        },
         expanded = isExpanded,
         onExpandedChange = { isExpanded = !isExpanded },
     ) {
@@ -37,7 +58,10 @@ fun DiscreteItemContent(
             label = { Text(item.title) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = isExpanded
+                    expanded = isExpanded,
+                    onIconClick = {
+                        isExpanded = !isExpanded
+                    }
                 )
             }
         )

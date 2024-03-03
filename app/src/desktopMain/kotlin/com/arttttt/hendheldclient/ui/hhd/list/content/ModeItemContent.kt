@@ -18,6 +18,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
 import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
 import com.arttttt.hendheldclient.ui.hhd.list.model.ActionListItem
@@ -36,12 +41,34 @@ fun ModeItemContent(
     onValueChanged: (FieldKey, Any) -> Unit,
     onResetClicked: (FieldKey) -> Unit,
 ) {
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+
     Column(
         modifier = modifier
             .padding(8.dp)
     ) {
 
         ModeDropDown(
+            modifier = Modifier.onKeyEvent { event ->
+                when {
+                    event.key == Key.Enter && event.type == KeyEventType.KeyDown -> true
+                    event.key == Key.Enter && event.type == KeyEventType.KeyUp -> {
+                        isExpanded = true
+
+                        true
+                    }
+                    event.key == Key.Escape && event.type == KeyEventType.KeyDown -> true
+                    event.key == Key.Escape && event.type == KeyEventType.KeyUp -> {
+                        isExpanded = false
+
+                        true
+                    }
+                    else -> false
+                }
+            },
+            isExpanded = isExpanded,
             title = item.title,
             selectedMode = item.mode.title,
             modes = item.modes,
@@ -51,6 +78,7 @@ fun ModeItemContent(
                     value,
                 )
             },
+            onExpandedChange = { isExpanded = it }
         )
 
         Spacer(Modifier.height(16.dp))
@@ -124,19 +152,18 @@ fun ModeItemContent(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun ModeDropDown(
+    modifier: Modifier,
+    isExpanded: Boolean,
     title: String,
     selectedMode: String,
     modes: Map<FieldKey, String>,
     onValueChanged: (Any) -> Unit,
+    onExpandedChange: (Boolean) -> Unit,
 ) {
-    var isExpanded by remember {
-        mutableStateOf(false)
-    }
-
     ExposedDropdownMenuBox(
-        modifier = Modifier,
+        modifier = modifier,
         expanded = isExpanded,
-        onExpandedChange = { isExpanded = !isExpanded },
+        onExpandedChange = onExpandedChange,
     ) {
         OutlinedTextField(
             modifier = Modifier,
@@ -146,7 +173,10 @@ private fun ModeDropDown(
             label = { Text(title) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = isExpanded
+                    expanded = isExpanded,
+                    onIconClick = {
+                        onExpandedChange.invoke(!isExpanded)
+                    }
                 )
             }
         )
@@ -154,13 +184,13 @@ private fun ModeDropDown(
         ExposedDropdownMenu(
             expanded = isExpanded,
             onDismissRequest = {
-                isExpanded = false
+                onExpandedChange.invoke(false)
             }
         ) {
             modes.forEach { (key, value) ->
                 DropdownMenuItem(
                     onClick = {
-                        isExpanded = false
+                        onExpandedChange.invoke(false)
                         onValueChanged.invoke(key.key)
                     },
                 ) {
