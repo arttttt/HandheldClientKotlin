@@ -1,4 +1,5 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.compose.desktop.application.dsl.JvmApplication
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -75,11 +76,13 @@ compose.desktop {
 
 tasks.register<Copy>("copyNativeLibs") {
     from("libs")
-    into("build/libs")
+    into("build/compose/binaries/main/app/org.arttttt.handheldclient/lib/app")
 }
 
-tasks.getByName("build").dependsOn("copyNativeLibs")
-
+/**
+ * todo: retrieve package name
+ */
 tasks.withType<JavaExec> {
-    systemProperty("java.library.path", "/home/artyom/PROJECTS/IdeaProjects/HandheldClient/app/libs/")
+    systemProperty("java.library.path", "${project.layout.buildDirectory.get()}/compose/binaries/main/app/org.arttttt.handheldclient/lib/app")
 }
+

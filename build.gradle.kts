@@ -5,3 +5,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.kotlinx.serialization) apply false
 }
+
+tasks.getByPath("app:run").dependsOn("copyNativeLibs")
+tasks.getByPath("app:createDistributable").finalizedBy("copyNativeLibs")
