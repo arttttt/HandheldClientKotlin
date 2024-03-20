@@ -1,7 +1,5 @@
 package com.arttttt.hendheldclient.ui.root
 
-import GamepadKeyEvent
-import androidx.compose.foundation.focusable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,16 +21,20 @@ import com.arttttt.hendheldclient.components.main.MainComponent
 import com.arttttt.hendheldclient.components.root.RootComponent
 import com.arttttt.hendheldclient.ui.login.LoginContent
 import com.arttttt.hendheldclient.ui.main.MainContent
+import com.arttttt.hendheldclient.utils.GamepadManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.awt.Robot
 import java.awt.event.KeyEvent
 
+/**
+ * todo: move out key handling code
+ */
 @Composable
 fun RootContent(
     component: RootComponent,
-    gamepadEventsFlow: Flow<GamepadKeyEvent>,
+    gamepadEventsFlow: Flow<GamepadManager.GamepadKeyEvent>,
 ) {
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
@@ -76,28 +78,28 @@ fun RootContent(
         gamepadEventsFlow
             .onEach { event ->
                 when {
-                    event.button == GamepadButton.ARROW_UP && event.direction == ButtonPressDirection.DOWN -> {
+                    event.button == GamepadManager.GamepadButton.ARROW_UP && event.direction == GamepadManager.ButtonPressDirection.DOWN -> {
                         robot.keyPress(KeyEvent.VK_UP)
                     }
-                    event.button == GamepadButton.ARROW_UP && event.direction == ButtonPressDirection.UP -> {
+                    event.button == GamepadManager.GamepadButton.ARROW_UP && event.direction == GamepadManager.ButtonPressDirection.UP -> {
                         robot.keyRelease(KeyEvent.VK_UP)
                     }
-                    event.button == GamepadButton.ARROW_DOWN && event.direction == ButtonPressDirection.DOWN -> {
+                    event.button == GamepadManager.GamepadButton.ARROW_DOWN && event.direction == GamepadManager.ButtonPressDirection.DOWN -> {
                         robot.keyPress(KeyEvent.VK_DOWN)
                     }
-                    event.button == GamepadButton.ARROW_DOWN && event.direction == ButtonPressDirection.UP -> {
+                    event.button == GamepadManager.GamepadButton.ARROW_DOWN && event.direction == GamepadManager.ButtonPressDirection.UP -> {
                         robot.keyRelease(KeyEvent.VK_DOWN)
                     }
-                    event.button == GamepadButton.BUTTON_A && event.direction == ButtonPressDirection.DOWN -> {
+                    event.button == GamepadManager.GamepadButton.BUTTON_A && event.direction == GamepadManager.ButtonPressDirection.DOWN -> {
                         robot.keyPress(KeyEvent.VK_ENTER)
                     }
-                    event.button == GamepadButton.BUTTON_A && event.direction == ButtonPressDirection.UP -> {
+                    event.button == GamepadManager.GamepadButton.BUTTON_A && event.direction == GamepadManager.ButtonPressDirection.UP -> {
                         robot.keyRelease(KeyEvent.VK_ENTER)
                     }
-                    event.button == GamepadButton.BUTTON_B && event.direction == ButtonPressDirection.DOWN -> {
+                    event.button == GamepadManager.GamepadButton.BUTTON_B && event.direction == GamepadManager.ButtonPressDirection.DOWN -> {
                         robot.keyPress(KeyEvent.VK_ESCAPE)
                     }
-                    event.button == GamepadButton.BUTTON_B && event.direction == ButtonPressDirection.UP -> {
+                    event.button == GamepadManager.GamepadButton.BUTTON_B && event.direction == GamepadManager.ButtonPressDirection.UP -> {
                         robot.keyRelease(KeyEvent.VK_ESCAPE)
                     }
                 }
