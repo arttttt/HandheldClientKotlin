@@ -9,9 +9,12 @@ import androidx.compose.ui.text.style.TextAlign
 import com.arttttt.hendheldclient.ui.hhd.list.model.ActionListItem
 
 @Composable
-fun ActionItemContent(item: ActionListItem) {
+fun ActionItemContent(
+    modifier: Modifier,
+    item: ActionListItem,
+) {
     Button(
-        modifier = Modifier,
+        modifier = modifier,
         onClick = {},
         enabled = item.isEnabled,
     ) {

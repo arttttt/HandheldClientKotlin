@@ -12,12 +12,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import com.arttttt.hendheldclient.ui.hhd.list.model.DiscreteListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.MultipleListItem
+import com.arttttt.hendheldclient.utils.NonFocusableTrailingIcon
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MultipleItemContent(
+    modifier: Modifier,
     item: MultipleListItem,
     onValueChanged: (Any) -> Unit,
 ) {
@@ -26,7 +33,26 @@ fun MultipleItemContent(
     }
 
     ExposedDropdownMenuBox(
-        modifier = Modifier,
+        modifier = Modifier
+            .onKeyEvent { event ->
+                when {
+                    event.key == Key.Enter && event.type == KeyEventType.KeyDown -> true
+                    event.key == Key.Enter && event.type == KeyEventType.KeyUp -> {
+                        isExpanded = true
+
+                        true
+                    }
+
+                    event.key == Key.Escape && event.type == KeyEventType.KeyDown -> true
+                    event.key == Key.Escape && event.type == KeyEventType.KeyUp -> {
+                        isExpanded = false
+
+                        true
+                    }
+
+                    else -> false
+                }
+            },
         expanded = isExpanded,
         onExpandedChange = { isExpanded = !isExpanded },
     ) {
@@ -37,8 +63,11 @@ fun MultipleItemContent(
             readOnly = true,
             label = { Text(item.title) },
             trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = isExpanded
+                ExposedDropdownMenuDefaults.NonFocusableTrailingIcon(
+                    expanded = isExpanded,
+                    onClick = {
+                        isExpanded = !isExpanded
+                    },
                 )
             }
         )

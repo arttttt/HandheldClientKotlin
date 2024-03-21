@@ -86,8 +86,6 @@ object GamepadManager {
                 val queue = controller.eventQueue
 
                 while (queue.getNextEvent(event)) {
-                    println(event)
-
                     when {
                         event.component.identifier == Component.Identifier.Button.A -> {
                             emit(

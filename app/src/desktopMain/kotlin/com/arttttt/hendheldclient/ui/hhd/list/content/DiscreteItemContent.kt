@@ -18,10 +18,12 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import com.arttttt.hendheldclient.ui.hhd.list.model.DiscreteListItem
+import com.arttttt.hendheldclient.utils.NonFocusableTrailingIcon
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DiscreteItemContent(
+    modifier: Modifier,
     item: DiscreteListItem,
     onValueChanged: (Any) -> Unit,
 ) {
@@ -30,23 +32,27 @@ fun DiscreteItemContent(
     }
 
     ExposedDropdownMenuBox(
-        modifier = Modifier.onKeyEvent { event ->
-            when {
-                event.key == Key.Enter && event.type == KeyEventType.KeyDown -> true
-                event.key == Key.Enter && event.type == KeyEventType.KeyUp -> {
-                    isExpanded = true
+        modifier = Modifier
+            .onKeyEvent { event ->
+                when {
+                    event.key == Key.Enter && event.type == KeyEventType.KeyDown -> true
+                    event.key == Key.Enter && event.type == KeyEventType.KeyUp -> {
+                        isExpanded = true
 
-                    true
-                }
-                event.key == Key.Escape && event.type == KeyEventType.KeyDown -> true
-                event.key == Key.Escape && event.type == KeyEventType.KeyUp -> {
-                    isExpanded = false
+                        true
+                    }
 
-                    true
+                    event.key == Key.Escape && event.type == KeyEventType.KeyDown -> true
+                    event.key == Key.Escape && event.type == KeyEventType.KeyUp -> {
+                        isExpanded = false
+
+                        true
+                    }
+
+                    else -> false
                 }
-                else -> false
             }
-        },
+            .then(modifier),
         expanded = isExpanded,
         onExpandedChange = { isExpanded = !isExpanded },
     ) {
@@ -57,9 +63,9 @@ fun DiscreteItemContent(
             readOnly = true,
             label = { Text(item.title) },
             trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
+                ExposedDropdownMenuDefaults.NonFocusableTrailingIcon(
                     expanded = isExpanded,
-                    onIconClick = {
+                    onClick = {
                         isExpanded = !isExpanded
                     }
                 )

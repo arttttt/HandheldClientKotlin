@@ -1,5 +1,6 @@
 package com.arttttt.hendheldclient.ui.hhd.list.content
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,19 +11,26 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.ExposedDropdownMenuDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import com.arttttt.hendheldclient.domain.entity.settings.FieldKey
 import com.arttttt.hendheldclient.ui.hhd.list.model.ActionListItem
@@ -33,6 +41,7 @@ import com.arttttt.hendheldclient.ui.hhd.list.model.IntListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.ModeListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.MultipleListItem
 import com.arttttt.hendheldclient.ui.hhd.list.model.TextListItem
+import com.arttttt.hendheldclient.utils.NonFocusableTrailingIcon
 
 @Composable
 fun ModeItemContent(
@@ -47,7 +56,9 @@ fun ModeItemContent(
 
     Column(
         modifier = modifier
-            .padding(8.dp)
+            .padding(
+                vertical = 8.dp
+            )
     ) {
 
         ModeDropDown(
@@ -85,10 +96,23 @@ fun ModeItemContent(
 
         item.mode.children.forEach { child ->
             when (child) {
-                is TextListItem -> TextItemContent(child)
-                is ActionListItem -> ActionItemContent(child)
+                is TextListItem -> TextItemContent(
+                    modifier = Modifier.padding(
+                        horizontal = 8.dp,
+                    ),
+                    item = child,
+                )
+                is ActionListItem -> ActionItemContent(
+                    modifier = Modifier.padding(
+                        horizontal = 8.dp,
+                    ),
+                    item = child,
+                )
                 is BooleanListItem -> {
                     BooleanItemContent(
+                        modifier = Modifier.padding(
+                            horizontal = 8.dp,
+                        ),
                         item = child,
                         onValueChanged = { value ->
                             onValueChanged.invoke(
@@ -114,6 +138,9 @@ fun ModeItemContent(
                 }
                 is DiscreteListItem -> {
                     DiscreteItemContent(
+                        modifier = Modifier.padding(
+                            horizontal = 8.dp
+                        ),
                         item = child,
                         onValueChanged = { value ->
                             onValueChanged.invoke(
@@ -125,6 +152,9 @@ fun ModeItemContent(
                 }
                 is MultipleListItem -> {
                     MultipleItemContent(
+                        modifier = Modifier.padding(
+                            horizontal = 8.dp
+                        ),
                         item = child,
                         onValueChanged = { value ->
                             onValueChanged.invoke(
@@ -172,9 +202,9 @@ private fun ModeDropDown(
             readOnly = true,
             label = { Text(title) },
             trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
+                ExposedDropdownMenuDefaults.NonFocusableTrailingIcon(
                     expanded = isExpanded,
-                    onIconClick = {
+                    onClick = {
                         onExpandedChange.invoke(!isExpanded)
                     }
                 )

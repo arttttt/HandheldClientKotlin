@@ -14,13 +14,17 @@ import androidx.compose.ui.unit.dp
 import com.arttttt.hendheldclient.ui.hhd.list.model.TextListItem
 
 @Composable
-fun TextItemContent(item: TextListItem) {
+fun TextItemContent(
+    modifier: Modifier,
+    item: TextListItem,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .defaultMinSize(
                 minHeight = ButtonDefaults.MinHeight,
-            ),
+            )
+            .then(modifier),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(item.title)

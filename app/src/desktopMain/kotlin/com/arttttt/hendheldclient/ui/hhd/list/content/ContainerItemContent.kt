@@ -28,21 +28,36 @@ fun ContainerItemContent(
     onResetClicked: (FieldKey) -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .padding(8.dp)
+        modifier = modifier.padding(8.dp)
     ) {
         Text(
-            text = item.title
+            modifier = Modifier.padding(
+                horizontal = 8.dp
+            ),
+            text = item.title,
         )
 
         Spacer(Modifier.height(16.dp))
 
         item.children.forEach { child ->
             when (child) {
-                is TextListItem -> TextItemContent(child)
-                is ActionListItem -> ActionItemContent(child)
+                is TextListItem -> TextItemContent(
+                    modifier = Modifier.padding(
+                        horizontal = 8.dp,
+                    ),
+                    item = child,
+                )
+                is ActionListItem -> ActionItemContent(
+                    modifier = Modifier.padding(
+                        horizontal = 8.dp,
+                    ),
+                    item = child,
+                )
                 is BooleanListItem -> {
                     BooleanItemContent(
+                        modifier = Modifier.padding(
+                            horizontal = 8.dp,
+                        ),
                         item = child,
                         onValueChanged = { value ->
                             onValueChanged.invoke(
@@ -70,6 +85,7 @@ fun ContainerItemContent(
                 }
                 is DiscreteListItem -> {
                     DiscreteItemContent(
+                        modifier = Modifier,
                         item = child,
                         onValueChanged = { value ->
                             onValueChanged.invoke(
@@ -81,6 +97,9 @@ fun ContainerItemContent(
                 }
                 is MultipleListItem -> {
                     MultipleItemContent(
+                        modifier = Modifier.padding(
+                            horizontal = 8.dp
+                        ),
                         item = child,
                         onValueChanged = { value ->
                             onValueChanged.invoke(

@@ -11,14 +11,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arttttt.hendheldclient.ui.hhd.list.model.BooleanListItem
+import com.arttttt.hendheldclient.utils.drawBorderWhenFocused
 
 @Composable
 fun BooleanItemContent(
+    modifier: Modifier,
     item: BooleanListItem,
     onValueChanged: (Any) -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .drawBorderWhenFocused()
+            .then(modifier),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
