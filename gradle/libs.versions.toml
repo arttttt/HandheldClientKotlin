@@ -1,11 +1,11 @@
 [versions]
 compose = "1.6.1"
-compose-plugin = "1.6.0"
-kotlin = "1.9.22"
-decompose = "3.0.0-alpha06"
-essenty = "2.0.0-alpha06"
-mviKotlin = "4.0.0-alpha02"
-coroutines = "1.8.0"
+compose-plugin = "1.6.10-rc01"
+kotlin = "2.0.0-RC3"
+decompose = "3.0.0"
+essenty = "2.0.0"
+mviKotlin = "4.0.0"
+coroutines = "1.8.1"
 serializationJson = "1.6.2"
 okio = "3.8.0"
 koin = "3.5.3"
@@ -40,3 +40,4 @@ slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+jetbrainsComposeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
