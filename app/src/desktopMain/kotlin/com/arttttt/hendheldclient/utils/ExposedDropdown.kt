@@ -2,6 +2,7 @@
 
 package com.arttttt.hendheldclient.utils
 
+import androidx.compose.foundation.focusable
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuDefaults
 import androidx.compose.material.Icon
@@ -21,10 +22,7 @@ fun ExposedDropdownMenuDefaults.NonFocusableTrailingIcon(
     onClick: () -> Unit,
 ) {
     TrailingIcon(
-        modifier = modifier
-            .focusProperties {
-                canFocus = false
-            },
+        modifier = modifier.focusable(false),
         expanded = expanded,
         onClick = onClick,
     )

@@ -2,6 +2,7 @@ package com.arttttt.hendheldclient.ui.hhd
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -62,7 +63,8 @@ fun HhdContent(component: HhdComponent) {
                                 width = 1.dp,
                                 color = Color.Red,
                                 shape = RoundedCornerShape(8.dp)
-                            ),
+                            )
+                            .focusGroup(),
                         item = item,
                         onValueChanged = component::onValueUpdated,
                         onResetClicked = component::onResetClicked,
