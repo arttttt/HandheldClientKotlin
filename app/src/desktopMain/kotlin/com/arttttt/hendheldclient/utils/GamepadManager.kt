@@ -28,6 +28,8 @@ object GamepadManager {
     enum class GamepadButton {
         ARROW_UP,
         ARROW_DOWN,
+        ARROW_LEFT,
+        ARROW_RIGHT,
         BUTTON_A,
         BUTTON_B;
     }
@@ -123,6 +125,8 @@ object GamepadManager {
                             val button = when (lastCorrectPov) {
                                 Component.POV.UP -> GamepadButton.ARROW_UP
                                 Component.POV.DOWN -> GamepadButton.ARROW_DOWN
+                                Component.POV.LEFT -> GamepadButton.ARROW_LEFT
+                                Component.POV.RIGHT -> GamepadButton.ARROW_RIGHT
                                 else -> null
                             }
 

@@ -51,14 +51,25 @@ fun RootContent(
             .onPreviewKeyEvent { event ->
                 when {
                     event.key == Key.DirectionUp && KeyEventType.KeyUp == event.type -> {
-                        focusManager.moveFocus(FocusDirection.Previous)
+                        focusManager.moveFocus(FocusDirection.Up)
                         true
                     }
                     event.key == Key.DirectionDown && KeyEventType.KeyUp == event.type -> {
-                        focusManager.moveFocus(FocusDirection.Next)
+                        focusManager.moveFocus(FocusDirection.Down)
                         true
                     }
-
+                    event.key == Key.DirectionLeft && KeyEventType.KeyUp == event.type -> {
+                        if (!focusManager.moveFocus(FocusDirection.Left)) {
+                            focusManager.moveFocus(FocusDirection.Left)
+                        }
+                        true
+                    }
+                    event.key == Key.DirectionRight && KeyEventType.KeyUp == event.type -> {
+                        if (!focusManager.moveFocus(FocusDirection.Right)) {
+                            focusManager.moveFocus(FocusDirection.Right)
+                        }
+                        true
+                    }
                     else -> false
                 }
             },
@@ -89,6 +100,18 @@ fun RootContent(
                     }
                     event.button == GamepadManager.GamepadButton.ARROW_DOWN && event.direction == GamepadManager.ButtonPressDirection.UP -> {
                         robot.keyRelease(KeyEvent.VK_DOWN)
+                    }
+                    event.button == GamepadManager.GamepadButton.ARROW_LEFT && event.direction == GamepadManager.ButtonPressDirection.DOWN -> {
+                        robot.keyPress(KeyEvent.VK_LEFT)
+                    }
+                    event.button == GamepadManager.GamepadButton.ARROW_LEFT && event.direction == GamepadManager.ButtonPressDirection.UP -> {
+                        robot.keyRelease(KeyEvent.VK_LEFT)
+                    }
+                    event.button == GamepadManager.GamepadButton.ARROW_RIGHT && event.direction == GamepadManager.ButtonPressDirection.DOWN -> {
+                        robot.keyPress(KeyEvent.VK_RIGHT)
+                    }
+                    event.button == GamepadManager.GamepadButton.ARROW_RIGHT && event.direction == GamepadManager.ButtonPressDirection.UP -> {
+                        robot.keyRelease(KeyEvent.VK_RIGHT)
                     }
                     event.button == GamepadManager.GamepadButton.BUTTON_A && event.direction == GamepadManager.ButtonPressDirection.DOWN -> {
                         robot.keyPress(KeyEvent.VK_ENTER)
